@@ -7,15 +7,17 @@ public abstract class Tank {
     private final int healthCapacity;
     private int currentHealth;
     private final int moveSpeed;
-    private final int damagePerShot;
+//    private final int damagePerShot;
+    private final Bullet bullet;
     private Body body;
 
-    public Tank(String tankName, int healthCapacity, int moveSpeed, int dps) {
+    public Tank(String tankName, int healthCapacity, int moveSpeed, float dps, int bulletSpeed) {
         this.tankName = tankName;
         this.healthCapacity = healthCapacity;
         this.currentHealth = healthCapacity;
         this.moveSpeed = moveSpeed;
-        this.damagePerShot = dps;
+        this.bullet = new Bullet(dps, bulletSpeed, this);
+//        this.damagePerShot = dps;
     }
 
     public String getTankName() {
@@ -30,8 +32,11 @@ public abstract class Tank {
     public int getMoveSpeed() {
         return moveSpeed;
     }
-    public int getDPS() {
-        return damagePerShot;
+    public float getDPS() {
+        return bullet.getDamage();
+    }
+    public Bullet getBulletType() {
+        return bullet;
     }
     public Body getBody() {
         return body;
