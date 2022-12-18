@@ -187,6 +187,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.bullet.Bullet;
@@ -346,7 +348,7 @@ public class BattleScreen extends TankStarsScreen {
         menubutton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                game.setScreen(new StartScreen(game));
+            game.setScreen(new StartScreen(game));
             }
         });
         stage.addActor(menubutton);
@@ -373,40 +375,80 @@ public class BattleScreen extends TankStarsScreen {
 
         // take a look at the input processor
 
-            Gdx.input.setInputProcessor(new InputAdapter() {
-                // if left arrow is pressed, apply force to player tank
-                @Override
-                public boolean keyDown(int keycode) {
-                    if (keycode == Input.Keys.LEFT) {
-                        playerTankBody.applyForceToCenter(-500, 0, true);
-                    }
-                    if (keycode == Input.Keys.RIGHT) {
-                        playerTankBody.applyForceToCenter(500, 0, true);
-                    }
-
-                    if (keycode == Input.Keys.A)
-                    {
-                        enemyTankBody.applyForceToCenter(-500, 0, true);
-                    }
-                    if (keycode == Input.Keys.D)
-                    {
-                        enemyTankBody.applyForceToCenter(500, 0, true);
-                    }
-                    if (keycode == Input.Keys.SPACE) {
-                        createBullet();
-                    }
-                    if (keycode == Input.Keys.G)
-                    {
-                        createEnemyBullet();
-                    }
-                    else
-                    {
-                        playerTankBody.applyForceToCenter(0,0,true);
-                    }
-                    return true;
+//        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+//            playerTankBody.applyLinearImpulse(-750f, 0, playerTankBody.getPosition().x, playerTankBody.getPosition().y, true);
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+//            playerTankBody.applyLinearImpulse(750f, 0, playerTankBody.getPosition().x, playerTankBody.getPosition().y, true);
+//        }
+////        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+////            playerTankBody.applyLinearImpulse(0, 750f, playerTankBody.getPosition().x, playerTankBody.getPosition().y, true);
+////        }
+////        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+////            playerTankBody.applyLinearImpulse(0, -750f, playerTankBody.getPosition().x, playerTankBody.getPosition().y, true);
+////        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+//            createBullet();
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+//            enemyTankBody.applyLinearImpulse(-750f, 0, enemyTankBody.getPosition().x, enemyTankBody.getPosition().y, true);
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+//            enemyTankBody.applyLinearImpulse(750f, 0, enemyTankBody.getPosition().x, enemyTankBody.getPosition().y, true);
+//        }
+//        if (Gdx.input.isKeyPressed(Input.Keys.G)) {
+//            createEnemyBullet();
+//        }
+        Gdx.input.setInputProcessor(new InputAdapter() {
+            // if left arrow is pressed, apply force to player tank
+            @Override
+            public boolean keyDown(int keycode) {
+                if (keycode == Input.Keys.A) {
+                    playerTankBody.applyLinearImpulse(-750f, 0, playerTankBody.getPosition().x, playerTankBody.getPosition().y, true);
                 }
-            });
-        }
+                if (keycode == Input.Keys.D) {
+                    playerTankBody.applyLinearImpulse(750f, 0, playerTankBody.getPosition().x, playerTankBody.getPosition().y, true);
+                }
+                if (keycode == Input.Keys.LEFT) {
+                    enemyTankBody.applyLinearImpulse(-750f, 0, enemyTankBody.getPosition().x, enemyTankBody.getPosition().y, true);
+                }
+                if (keycode == Input.Keys.RIGHT) {
+                    enemyTankBody.applyLinearImpulse(750f, 0, enemyTankBody.getPosition().x, enemyTankBody.getPosition().y, true);
+                }
+                if (keycode == Input.Keys.SPACE) {
+                    createBullet();
+                }
+                if (keycode == Input.Keys.G) {
+                    createEnemyBullet();
+                }
+                return true;
+            }
+            @Override
+            public boolean keyUp(int keycode) {
+                if (keycode == Input.Keys.A) {
+                    Vector2 vec = playerTankBody.getLinearVelocity();
+                    vec.x = 0;
+                    playerTankBody.setLinearVelocity(vec);
+                }
+                if (keycode == Input.Keys.D) {
+                    Vector2 vec = playerTankBody.getLinearVelocity();
+                    vec.x = 0;
+                    playerTankBody.setLinearVelocity(vec);
+                }
+                if (keycode == Input.Keys.LEFT) {
+                    Vector2 vec = enemyTankBody.getLinearVelocity();
+                    vec.x = 0;
+                    enemyTankBody.setLinearVelocity(vec);
+                }
+                if (keycode == Input.Keys.RIGHT) {
+                    Vector2 vec = enemyTankBody.getLinearVelocity();
+                    vec.x = 0;
+                    enemyTankBody.setLinearVelocity(vec);
+                }
+                return true;
+            }
+        });
+    }
 
 
     @Override
@@ -440,17 +482,17 @@ public class BattleScreen extends TankStarsScreen {
         world.step(1/60f, 6, 2);
 
         for (Body bullet : bullets) {
-            if (bullet.getPosition().x > 960 || bullet.getPosition().x < 0 || bullet.getPosition().y > 540 || bullet.getPosition().y < 205 || ((bullet.getPosition().y <= enemyTankBody.getPosition().y) && (bullet.getPosition().x >= enemyTankBody.getPosition().x))) {
-                world.destroyBody(bullet);
+            if (bullet.getPosition().x > 960 || bullet.getPosition().x < 0 || bullet.getPosition().y > 540 || bullet.getPosition().y < 205) {
                 bullets.remove(bullet);
+                world.destroyBody(bullet);
                 break;
             }
         }
 
         for (Body enemybullet : enemyBullets) {
-            if (enemybullet.getPosition().x > 960 || enemybullet.getPosition().x < 0 || enemybullet.getPosition().y > 540 || enemybullet.getPosition().y < 205 || ((enemybullet.getPosition().y <= playerTankBody.getPosition().y + 50) && (enemybullet.getPosition().x <= playerTankBody.getPosition().x + 50))) {
-                world.destroyBody(enemybullet);
+            if (enemybullet.getPosition().x > 960 || enemybullet.getPosition().x < 0 || enemybullet.getPosition().y > 540 || enemybullet.getPosition().y < 205) {
                 enemyBullets.remove(enemybullet);
+                world.destroyBody(enemybullet);
                 break;
             }
         }
