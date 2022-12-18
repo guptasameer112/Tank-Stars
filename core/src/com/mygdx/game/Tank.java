@@ -1,19 +1,21 @@
 package com.mygdx.game;
 
-public class Tank {
+import com.badlogic.gdx.physics.box2d.Body;
+
+public abstract class Tank {
     private final String tankName;
     private final int healthCapacity;
-    private final int moveSpeed;
-    private int damageCapacity;
-
     private int currentHealth;
-    private int health;
+    private final int moveSpeed;
+    private final int damagePerShot;
+    private Body body;
 
-    public Tank(String tankName, int healthCapacity, int moveSpeed, int x, int y) {
+    public Tank(String tankName, int healthCapacity, int moveSpeed, int dps) {
         this.tankName = tankName;
         this.healthCapacity = healthCapacity;
-        this.health = healthCapacity;
+        this.currentHealth = healthCapacity;
         this.moveSpeed = moveSpeed;
+        this.damagePerShot = dps;
     }
 
     public String getTankName() {
@@ -22,21 +24,28 @@ public class Tank {
     public int getHealthCapacity() {
         return healthCapacity;
     }
+    public int getCurrentHealth() {
+        return currentHealth;
+    }
     public int getMoveSpeed() {
         return moveSpeed;
     }
-    public int getDamageCapacity() {
-        return damageCapacity;
+    public int getDPS() {
+        return damagePerShot;
     }
-    public int getCurrentHealth() {
-        return health;
+    public Body getBody() {
+        return body;
     }
+    public void setBody(Body body) {
+        this.body = body;
+    }
+
     public void reduceHealth(int damage) {
         if (damage > 0) {
-            health -= damage;
+            currentHealth -= damage;
         }
-        if (health < 0) {
-            health = 0;
+        if (currentHealth < 0) {
+            currentHealth = 0;
         }
     }
 }

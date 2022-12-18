@@ -199,6 +199,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Timer;
+import com.mygdx.game.AtomicTank;
+import com.mygdx.game.SpectreTank;
+import com.mygdx.game.Tank;
 
 import java.util.ArrayList;
 
@@ -246,6 +249,9 @@ public class BattleScreen extends TankStarsScreen {
     private ArrayList<Body> enemyBullets = new ArrayList<Body>();
     private ArrayList<Vector2> groundCoords = new ArrayList<Vector2>();
 
+    private final Tank playerTank = new SpectreTank();
+    private final Tank enemyTank = new AtomicTank();
+
     public BattleScreen(Game game) {
         super(game);
     }
@@ -269,6 +275,7 @@ public class BattleScreen extends TankStarsScreen {
         PolygonShape playerTankShape = new PolygonShape();
         playerTankShape.setAsBox(60, 40);
         playerTankBody.createFixture(playerTankShape, 0.0f);
+        playerTank.setBody(playerTankBody);
         playerTankShape.dispose();
 
         //enemy tank
@@ -279,6 +286,7 @@ public class BattleScreen extends TankStarsScreen {
         PolygonShape enemyTankShape = new PolygonShape();
         enemyTankShape.setAsBox(60, 40);
         enemyTankBody.createFixture(enemyTankShape, 0.0f);
+        enemyTank.setBody(enemyTankBody);
         enemyTankShape.dispose();
     }
 
@@ -286,7 +294,7 @@ public class BattleScreen extends TankStarsScreen {
     {
         BodyDef bulletBodyDef = new BodyDef();
         bulletBodyDef.type = BodyDef.BodyType.DynamicBody;
-        bulletBodyDef.position.set(new Vector2(playerTankBody.getPosition().x + 50, playerTankBody.getPosition().y + 10));
+        bulletBodyDef.position.set(new Vector2(playerTank.getBody().getPosition().x + 50, playerTank.getBody().getPosition().y + 10));
         bulletBody = world.createBody(bulletBodyDef);
         PolygonShape bulletShape = new PolygonShape();
         bulletShape.setAsBox(10, 10);
@@ -301,7 +309,7 @@ public class BattleScreen extends TankStarsScreen {
     {
         BodyDef bulletBodyDef = new BodyDef();
         bulletBodyDef.type = BodyDef.BodyType.DynamicBody;
-        bulletBodyDef.position.set(new Vector2(enemyTankBody.getPosition().x - 50, enemyTankBody.getPosition().y + 10));
+        bulletBodyDef.position.set(new Vector2(enemyTank.getBody().getPosition().x - 50, enemyTank.getBody().getPosition().y + 10));
         bulletBody = world.createBody(bulletBodyDef);
         PolygonShape bulletShape = new PolygonShape();
         bulletShape.setAsBox(10, 10);
@@ -404,16 +412,16 @@ public class BattleScreen extends TankStarsScreen {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.A) {
-                    playerTankBody.applyLinearImpulse(-750f, 0, playerTankBody.getPosition().x, playerTankBody.getPosition().y, true);
+                    playerTank.getBody().applyLinearImpulse((float) -playerTank.getMoveSpeed(), 0, playerTank.getBody().getPosition().x, playerTank.getBody().getPosition().y, true);
                 }
                 if (keycode == Input.Keys.D) {
-                    playerTankBody.applyLinearImpulse(750f, 0, playerTankBody.getPosition().x, playerTankBody.getPosition().y, true);
+                    playerTank.getBody().applyLinearImpulse((float) playerTank.getMoveSpeed(), 0, playerTank.getBody().getPosition().x, playerTank.getBody().getPosition().y, true);
                 }
                 if (keycode == Input.Keys.LEFT) {
-                    enemyTankBody.applyLinearImpulse(-750f, 0, enemyTankBody.getPosition().x, enemyTankBody.getPosition().y, true);
+                    enemyTank.getBody().applyLinearImpulse((float) -enemyTank.getMoveSpeed(), 0, enemyTank.getBody().getPosition().x, enemyTank.getBody().getPosition().y, true);
                 }
                 if (keycode == Input.Keys.RIGHT) {
-                    enemyTankBody.applyLinearImpulse(750f, 0, enemyTankBody.getPosition().x, enemyTankBody.getPosition().y, true);
+                    enemyTank.getBody().applyLinearImpulse((float) enemyTank.getMoveSpeed(), 0, enemyTank.getBody().getPosition().x, enemyTank.getBody().getPosition().y, true);
                 }
                 if (keycode == Input.Keys.SPACE) {
                     createBullet();
@@ -426,24 +434,24 @@ public class BattleScreen extends TankStarsScreen {
             @Override
             public boolean keyUp(int keycode) {
                 if (keycode == Input.Keys.A) {
-                    Vector2 vec = playerTankBody.getLinearVelocity();
+                    Vector2 vec = playerTank.getBody().getLinearVelocity();
                     vec.x = 0;
-                    playerTankBody.setLinearVelocity(vec);
+                    playerTank.getBody().setLinearVelocity(vec);
                 }
                 if (keycode == Input.Keys.D) {
-                    Vector2 vec = playerTankBody.getLinearVelocity();
+                    Vector2 vec = playerTank.getBody().getLinearVelocity();
                     vec.x = 0;
-                    playerTankBody.setLinearVelocity(vec);
+                    playerTank.getBody().setLinearVelocity(vec);
                 }
                 if (keycode == Input.Keys.LEFT) {
-                    Vector2 vec = enemyTankBody.getLinearVelocity();
+                    Vector2 vec = enemyTank.getBody().getLinearVelocity();
                     vec.x = 0;
-                    enemyTankBody.setLinearVelocity(vec);
+                    enemyTank.getBody().setLinearVelocity(vec);
                 }
                 if (keycode == Input.Keys.RIGHT) {
-                    Vector2 vec = enemyTankBody.getLinearVelocity();
+                    Vector2 vec = enemyTank.getBody().getLinearVelocity();
                     vec.x = 0;
-                    enemyTankBody.setLinearVelocity(vec);
+                    enemyTank.getBody().setLinearVelocity(vec);
                 }
                 return true;
             }
@@ -472,8 +480,8 @@ public class BattleScreen extends TankStarsScreen {
         batch.draw(battleScreenSuperNova, 304, 299);
         batch.draw(battleScreenWhitePlanet, 75, 303);
         batch.draw(battleScreenGround, 0, 0);
-        batch.draw(battleScreenPlayerTank, playerTankBody.getPosition().x - 45, playerTankBody.getPosition().y - 40);
-        batch.draw(battleScreenEnemyTank, enemyTankBody.getPosition().x - 30, enemyTankBody.getPosition().y - 40);
+        batch.draw(battleScreenPlayerTank, playerTank.getBody().getPosition().x - 45, playerTank.getBody().getPosition().y - 40);
+        batch.draw(battleScreenEnemyTank, enemyTank.getBody().getPosition().x - 30, enemyTank.getBody().getPosition().y - 40);
 //        batch.draw(BulletImage, bulletBody.getPosition().x - 5, bulletBody.getPosition().y - 5);
         batch.end();
         stage.draw();
