@@ -1,0 +1,156 @@
+BattleScreenSprite.png
+size: 960, 994
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+background
+  rotate: false
+  xy: 0, 454
+  size: 960, 540
+  split: 0, 0, 0, 0
+  pad: 240, 240, 135, 135
+  orig: 960, 540
+  offset: 0, 0
+  index: -1
+earth 1
+  rotate: false
+  xy: 596, 51
+  size: 153, 156
+  split: 0, 0, 0, 0
+  pad: 38, 38, 39, 39
+  orig: 153, 156
+  offset: 0, 0
+  index: -1
+Ground
+  rotate: false
+  xy: 0, 207
+  size: 960, 247
+  split: 0, 0, 0, 38
+  pad: 240, 240, 52, 90
+  orig: 960, 247
+  offset: 0, 0
+  index: -1
+Logo
+  rotate: false
+  xy: 449, 51
+  size: 147, 149
+  split: 0, 0, 0, 0
+  pad: 37, 37, 37, 37
+  orig: 147, 149
+  offset: 0, 0
+  index: -1
+Menu
+  rotate: false
+  xy: 859, 0
+  size: 55, 51
+  orig: 55, 51
+  offset: 0, 0
+  index: -1
+player 1 health
+  rotate: false
+  xy: 261, 0
+  size: 277, 45
+  split: 0, 0, 0, 0
+  pad: 69, 69, 11, 11
+  orig: 277, 45
+  offset: 0, 0
+  index: -1
+Player 1
+  rotate: false
+  xy: 73, 0
+  size: 77, 26
+  split: 0, 0, 0, 0
+  pad: 19, 19, 7, 6
+  orig: 77, 26
+  offset: 0, 0
+  index: -1
+player 2 health
+  rotate: false
+  xy: 590, 0
+  size: 269, 49
+  split: 0, 0, 0, 0
+  pad: 67, 67, 12, 12
+  orig: 269, 49
+  offset: 0, 0
+  index: -1
+Player 2
+  rotate: false
+  xy: 0, 0
+  size: 73, 19
+  split: 0, 0, 0, 0
+  pad: 18, 18, 5, 5
+  orig: 73, 19
+  offset: 0, 0
+  index: -1
+redplanet 1
+  rotate: false
+  xy: 174, 51
+  size: 81, 67
+  split: 0, 0, 0, 0
+  pad: 20, 20, 17, 17
+  orig: 81, 67
+  offset: 0, 0
+  index: -1
+rock (1)
+  rotate: false
+  xy: 538, 0
+  size: 52, 47
+  split: 0, 0, 0, 0
+  pad: 13, 13, 12, 12
+  orig: 52, 47
+  offset: 0, 0
+  index: -1
+rock (2)
+  rotate: false
+  xy: 150, 0
+  size: 50, 33
+  split: 0, 0, 0, 0
+  pad: 13, 12, 8, 8
+  orig: 50, 33
+  offset: 0, 0
+  index: -1
+rock
+  rotate: false
+  xy: 200, 0
+  size: 61, 37
+  split: 0, 0, 0, 0
+  pad: 15, 15, 9, 9
+  orig: 61, 37
+  offset: 0, 0
+  index: -1
+supernova 1
+  rotate: false
+  xy: 255, 51
+  size: 108, 99
+  split: 0, 0, 0, 0
+  pad: 27, 27, 25, 25
+  orig: 108, 99
+  offset: 0, 0
+  index: -1
+Tank 2
+  rotate: false
+  xy: 86, 51
+  size: 88, 62
+  split: 0, 0, 0, 0
+  pad: 22, 22, 16, 15
+  orig: 88, 62
+  offset: 0, 0
+  index: -1
+Tank
+  rotate: false
+  xy: 0, 51
+  size: 86, 56
+  split: 0, 0, 0, 0
+  pad: 22, 21, 14, 14
+  orig: 86, 56
+  offset: 0, 0
+  index: -1
+whiteplanet 1
+  rotate: false
+  xy: 363, 51
+  size: 86, 126
+  split: 0, 0, 0, 0
+  pad: 22, 21, 32, 31
+  orig: 86, 126
+  offset: 0, 0
+  index: -1

@@ -1,0 +1,95 @@
+TankChangeSprite.png
+size: 960, 990
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Back Button
+  rotate: false
+  xy: 0, 0
+  size: 38, 40
+  split: 0, 0, 0, 0
+  pad: 10, 9, 10, 10
+  orig: 38, 40
+  offset: 0, 0
+  index: -1
+background
+  rotate: false
+  xy: 0, 450
+  size: 960, 540
+  split: 0, 0, 0, 0
+  pad: 240, 240, 135, 135
+  orig: 960, 540
+  offset: 0, 0
+  index: -1
+Continue Button
+  rotate: false
+  xy: 452, 0
+  size: 287, 75
+  split: 0, 0, 0, 0
+  pad: 72, 72, 19, 19
+  orig: 287, 75
+  offset: 0, 0
+  index: -1
+Exit Button
+  rotate: false
+  xy: 118, 0
+  size: 48, 47
+  split: 0, 0, 0, 0
+  pad: 12, 12, 12, 12
+  orig: 48, 47
+  offset: 0, 0
+  index: -1
+Groundline
+  rotate: false
+  xy: 0, 447
+  size: 960, 3
+  split: 0, 0, 0, 0
+  pad: 240, 240, 1, 1
+  orig: 960, 3
+  offset: 0, 0
+  index: -1
+Music
+  rotate: false
+  xy: 38, 0
+  size: 39, 32
+  split: 0, 0, 0, 0
+  pad: 10, 10, 8, 8
+  orig: 39, 32
+  offset: 0, 0
+  index: -1
+Player 1 Tank
+  rotate: false
+  xy: 423, 144
+  size: 430, 275
+  split: 0, 0, 0, 0
+  pad: 108, 107, 69, 69
+  orig: 430, 275
+  offset: 0, 0
+  index: -1
+Player 2 Tank
+  rotate: false
+  xy: 0, 144
+  size: 423, 303
+  split: 0, 0, 0, 0
+  pad: 106, 106, 76, 76
+  orig: 423, 303
+  offset: 0, 0
+  index: -1
+Sound
+  rotate: false
+  xy: 77, 0
+  size: 41, 39
+  split: 0, 0, 0, 0
+  pad: 10, 10, 10, 10
+  orig: 41, 39
+  offset: 0, 0
+  index: -1
+TankStarsLogo
+  rotate: false
+  xy: 166, 0
+  size: 286, 144
+  split: 0, 0, 0, 0
+  pad: 72, 71, 36, 36
+  orig: 286, 144
+  offset: 0, 0
+  index: -1

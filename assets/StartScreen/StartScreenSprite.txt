@@ -1,0 +1,102 @@
+StartScreenSprite.png
+size: 960, 870
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Back Button
+  rotate: false
+  xy: 39, 0
+  size: 38, 40
+  split: 0, 0, 0, 0
+  pad: 10, 9, 10, 10
+  orig: 38, 40
+  offset: 0, 0
+  index: -1
+background
+  rotate: false
+  xy: 0, 330
+  size: 960, 540
+  split: 0, 0, 0, 0
+  pad: 240, 240, 135, 135
+  orig: 960, 540
+  offset: 0, 0
+  index: -1
+Exit Button
+  rotate: false
+  xy: 118, 0
+  size: 48, 47
+  split: 0, 0, 0, 0
+  pad: 12, 12, 12, 12
+  orig: 48, 47
+  offset: 0, 0
+  index: -1
+Fire
+  rotate: false
+  xy: 307, 75
+  size: 238, 252
+  split: 0, 16, 21, 16
+  pad: 60, 59, 63, 63
+  orig: 238, 252
+  offset: 0, 0
+  index: -1
+Groundline
+  rotate: false
+  xy: 0, 327
+  size: 960, 3
+  orig: 960, 3
+  offset: 0, 0
+  index: -1
+Music
+  rotate: false
+  xy: 0, 0
+  size: 39, 32
+  split: 0, 0, 0, 0
+  pad: 10, 10, 8, 8
+  orig: 39, 32
+  offset: 0, 0
+  index: -1
+Resume Button
+  rotate: false
+  xy: 166, 0
+  size: 276, 75
+  split: 0, 0, 0, 0
+  pad: 69, 69, 19, 19
+  orig: 276, 75
+  offset: 0, 0
+  index: -1
+Sound
+  rotate: false
+  xy: 77, 0
+  size: 41, 39
+  split: 0, 0, 0, 0
+  pad: 10, 10, 10, 10
+  orig: 41, 39
+  offset: 0, 0
+  index: -1
+Start Button
+  rotate: false
+  xy: 442, 0
+  size: 287, 75
+  split: 0, 0, 0, 0
+  pad: 72, 72, 19, 19
+  orig: 287, 75
+  offset: 0, 0
+  index: -1
+Tank
+  rotate: false
+  xy: 545, 75
+  size: 324, 217
+  split: 0, 0, 0, 0
+  pad: 81, 81, 54, 54
+  orig: 324, 217
+  offset: 0, 0
+  index: -1
+TankStarsLogo
+  rotate: false
+  xy: 0, 75
+  size: 307, 144
+  split: 0, 19, 0, 0
+  pad: 77, 77, 36, 36
+  orig: 307, 144
+  offset: 0, 0
+  index: -1

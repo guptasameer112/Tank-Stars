@@ -1,0 +1,86 @@
+PauseMenuSprite.png
+size: 246, 1154
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Background
+  rotate: false
+  xy: 0, 0
+  size: 240, 426
+  split: 0, 0, 0, 0
+  pad: 60, 60, 107, 106
+  orig: 240, 426
+  offset: 0, 0
+  index: -1
+Exit Button
+  rotate: false
+  xy: 0, 426
+  size: 40, 41
+  split: 0, 0, 0, 0
+  pad: 10, 10, 10, 10
+  orig: 40, 41
+  offset: 0, 0
+  index: -1
+General Image
+  rotate: false
+  xy: 40, 426
+  size: 141, 142
+  split: 0, 0, 0, 0
+  pad: 35, 35, 36, 35
+  orig: 141, 142
+  offset: 0, 0
+  index: -1
+Outer Rectangle
+  rotate: false
+  xy: 0, 568
+  size: 246, 432
+  split: 0, 0, 0, 0
+  pad: 62, 61, 108, 108
+  orig: 246, 432
+  offset: 0, 0
+  index: -1
+PAUSED
+  rotate: false
+  xy: 0, 1000
+  size: 75, 16
+  split: 0, 0, 0, 0
+  pad: 19, 19, 4, 4
+  orig: 75, 16
+  offset: 0, 0
+  index: -1
+Restart Button
+  rotate: false
+  xy: 75, 1000
+  size: 39, 38
+  split: 0, 0, 0, 0
+  pad: 10, 10, 10, 9
+  orig: 39, 38
+  offset: 0, 0
+  index: -1
+Resume Button
+  rotate: false
+  xy: 114, 1000
+  size: 32, 38
+  split: 0, 0, 0, 0
+  pad: 8, 8, 10, 9
+  orig: 32, 38
+  offset: 0, 0
+  index: -1
+Save Game Button
+  rotate: false
+  xy: 0, 1038
+  size: 178, 50
+  split: 0, 0, 0, 0
+  pad: 45, 44, 13, 12
+  orig: 178, 50
+  offset: 0, 0
+  index: -1
+Upper Rectangle
+  rotate: false
+  xy: 0, 1088
+  size: 172, 66
+  split: 0, 0, 0, 0
+  pad: 43, 43, 17, 16
+  orig: 172, 66
+  offset: 0, 0
+  index: -1
