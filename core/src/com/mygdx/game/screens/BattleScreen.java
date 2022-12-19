@@ -181,12 +181,10 @@
 package com.mygdx.game.screens;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -195,12 +193,13 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.game.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Objects;
 
 import static java.lang.Thread.sleep;
@@ -261,8 +260,10 @@ public class BattleScreen extends TankStarsScreen {
     private Body enemyTankBody;
     private Body bulletBody;
     private ChainShape groundShape;
-    private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
-    private ArrayList<Bullet> enemyBullets = new ArrayList<Bullet>();
+//    private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+    private Collection<Bullet> bullets = new ArrayList<Bullet>();
+//    private ArrayList<Bullet> enemyBullets = new ArrayList<Bullet>();
+    private Collection<Bullet> enemyBullets = new ArrayList<Bullet>();
     private ArrayList<Vector2> groundCoords = new ArrayList<Vector2>();
 
     private final Tank playerTank = Config.getInstance().getPlayerTank();
@@ -558,8 +559,11 @@ public class BattleScreen extends TankStarsScreen {
         CollisionRect bulletRect;
         CollisionRect enemyTankRect = new CollisionRect((int) enemyTank.getBody().getPosition().x - 40, (int) enemyTank.getBody().getPosition().y - 40, 60 + 80, 40 + 80);
         CollisionRect playerTankRect = new CollisionRect((int) playerTank.getBody().getPosition().x, (int) playerTank.getBody().getPosition().y, 60 + 10, 40 + 10);
-        for (Bullet bullet: bullets) {
-            bulletRect = new CollisionRect((int) bullet.getBody().getPosition().x, (int) bulletBody.getPosition().y, 40, 40);
+        Iterator<Bullet> iterator = bullets.iterator();
+
+        while (iterator.hasNext()) {
+            Bullet bullet = iterator.next();
+            bulletRect = new CollisionRect((int) bullet.getBody().getPosition().x, (int) bullet.getBody().getPosition().y, 40, 40);
             if (bulletRect.collidesWith(enemyTankRect)) {
                 enemyTank.getBody().applyLinearImpulse(bullet.getSpeed(), 0, enemyTank.getBody().getPosition().x, enemyTank.getBody().getPosition().y, true);
                 enemyTank.getBody().setLinearDamping(1.0f);
@@ -585,7 +589,9 @@ public class BattleScreen extends TankStarsScreen {
                 break;
             }
         }
-        for (Bullet bullet: enemyBullets) {
+        iterator = enemyBullets.iterator();
+        while (iterator.hasNext()) {
+            Bullet bullet = iterator.next();
             bulletRect = new CollisionRect((int) bullet.getBody().getPosition().x - 10, (int) bullet.getBody().getPosition().y - 10, 20 + 20, 20 + 20);
             if (playerTankRect.collidesWith(bulletRect)) {
                 playerTank.getBody().applyLinearImpulse(-bullet.getSpeed(), 0, playerTank.getBody().getPosition().x, playerTank.getBody().getPosition().y, true);
@@ -613,7 +619,9 @@ public class BattleScreen extends TankStarsScreen {
             }
         }
 
-        for (Bullet bullet: bullets) {
+        iterator = bullets.iterator();
+        while (iterator.hasNext()) {
+            Bullet bullet = iterator.next();
             if (bullet.getBody().getPosition().x > 960 || bullet.getBody().getPosition().x < 0 || bullet.getBody().getPosition().y > 540 || bullet.getBody().getPosition().y < 205) {
                 bullets.remove(bullet);
                 world.destroyBody(bullet.getBody());
@@ -621,7 +629,9 @@ public class BattleScreen extends TankStarsScreen {
             }
         }
 
-        for (Bullet bullet: enemyBullets) {
+        iterator = enemyBullets.iterator();
+        while (iterator.hasNext()) {
+            Bullet bullet = iterator.next();
             if (bullet.getBody().getPosition().x > 960 || bullet.getBody().getPosition().x < 0 || bullet.getBody().getPosition().y > 540 || bullet.getBody().getPosition().y < 205) {
                 enemyBullets.remove(bullet);
                 world.destroyBody(bullet.getBody());
