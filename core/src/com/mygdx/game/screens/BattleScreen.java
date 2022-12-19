@@ -201,6 +201,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.game.*;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static java.lang.Thread.sleep;
 
@@ -264,8 +265,8 @@ public class BattleScreen extends TankStarsScreen {
     private ArrayList<Bullet> enemyBullets = new ArrayList<Bullet>();
     private ArrayList<Vector2> groundCoords = new ArrayList<Vector2>();
 
-    private final Tank playerTank = new SpectreTank();
-    private final Tank enemyTank = new AtomicTank();
+    private final Tank playerTank = Config.getInstance().getPlayerTank();
+    private final Tank enemyTank = Config.getInstance().getEnemyTank();
 
     public BattleScreen(Game game) {
         super(game);
@@ -304,7 +305,7 @@ public class BattleScreen extends TankStarsScreen {
         enemyTankShape.dispose();
     }
 
-    public void createBullet() {
+    public void createBullet(float speedX, float speedY) {
         BodyDef bulletBodyDef = new BodyDef();
         bulletBodyDef.type = BodyDef.BodyType.DynamicBody;
         bulletBodyDef.position.set(new Vector2(playerTank.getBody().getPosition().x + 50, playerTank.getBody().getPosition().y + 10));
@@ -314,15 +315,22 @@ public class BattleScreen extends TankStarsScreen {
         bulletShape.setAsBox((float) playerTank.getBulletType().getWidth() / 2, (float) playerTank.getBulletType().getHeight() / 2);
         bulletBody.createFixture(bulletShape, 0.0f);
         bulletShape.dispose();
-        bulletBody.applyForceToCenter(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed(), true);
-        bulletBody.setGravityScale(10);
+        if (Objects.equals(playerTank.getTankName(), "Buratino")) {
+//            bulletBody.setLinearVelocity(playerTank.getBulletType().getSpeed(), 0);
+            bulletBody.applyForceToCenter(speedX * 100f, speedY, true);
+            // set bullet gravity to 0
+            bulletBody.setGravityScale(0);
+        } else {
+            bulletBody.applyForceToCenter(speedX, speedY, true);
+            bulletBody.setGravityScale(10);
+        }
 
         Bullet bullet = new Bullet(playerTank.getBulletType().getDamage(), playerTank.getBulletType().getSpeed(), playerTank);
         bullet.setBody(bulletBody);
         bullets.add(bullet);
     }
 
-    public void createEnemyBullet() {
+    public void createEnemyBullet(float speedX, float speedY) {
         BodyDef bulletBodyDef = new BodyDef();
         bulletBodyDef.type = BodyDef.BodyType.DynamicBody;
         bulletBodyDef.position.set(new Vector2(enemyTank.getBody().getPosition().x - 50, enemyTank.getBody().getPosition().y + 10));
@@ -331,8 +339,14 @@ public class BattleScreen extends TankStarsScreen {
         bulletShape.setAsBox((float) enemyTank.getBulletType().getWidth() / 2, (float) enemyTank.getBulletType().getHeight() / 2);
         bulletBody.createFixture(bulletShape, 0.0f);
         bulletShape.dispose();
-        bulletBody.applyForceToCenter(-enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed(), true);
-        bulletBody.setGravityScale(10);
+        if (Objects.equals(enemyTank.getTankName(), "Buratino")) {
+//            bulletBody.setLinearVelocity(-enemyTank.getBulletType().getSpeed(), 0);
+            bulletBody.applyForceToCenter(-speedX * 100f, speedY, true);
+            bulletBody.setGravityScale(0);
+        } else {
+            bulletBody.applyForceToCenter(-speedX, speedY, true);
+            bulletBody.setGravityScale(10);
+        }
 
         Bullet bullet = new Bullet(enemyTank.getBulletType().getDamage(), enemyTank.getBulletType().getSpeed(), enemyTank);
         bullet.setBody(bulletBody);
@@ -361,8 +375,10 @@ public class BattleScreen extends TankStarsScreen {
         battleScreenWhitePlanet = new TextureRegion(battleScreenSprite, 363, 51, 86, 126);
         battleScreenMenu = new TextureRegion(battleScreenSprite, 859, 0, 55, 51);
         battleScreenGround = new TextureRegion(battleScreenSprite, 0, 207, 960, 247);
-        battleScreenPlayerTank = new TextureRegion(battleScreenSprite, 0, 51, 86, 56);
-        battleScreenEnemyTank = new TextureRegion(battleScreenSprite, 86, 51, 88, 62);
+        battleScreenPlayerTank = playerTank.getTextureRegion();
+        battleScreenEnemyTank = enemyTank.getTextureRegion();
+//        battleScreenPlayerTank = new TextureRegion(battleScreenSprite, 0, 51, 86, 56);
+//        battleScreenEnemyTank = new TextureRegion(battleScreenSprite, 86, 51, 88, 62);
         GameOverText = new Texture("PauseMenu/GameOver.png");
         Player1WinsText = new Texture("PauseMenu/Player1.png");
         Player2WinsText = new Texture("PauseMenu/Player2.png");
@@ -429,14 +445,29 @@ public class BattleScreen extends TankStarsScreen {
                     enemyTank.getBody().applyLinearImpulse((float) enemyTank.getMoveSpeed(), 0, enemyTank.getBody().getPosition().x, enemyTank.getBody().getPosition().y, true);
                 }
                 if (keycode == Input.Keys.G) {
-                    createBullet();
+                    if (Objects.equals(playerTank.getTankName(), "Buratino")) {
+                        createBullet(playerTank.getBulletType().getSpeed(), 0);
+                    } else if (Objects.equals(playerTank.getTankName(), "Spectre")) {
+                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed());
+                    } else {
+                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed() * 2.0f);
+                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed());
+                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed() * 0.75f);
+                    }
                 }
                 if (keycode == Input.Keys.SPACE) {
-                    createEnemyBullet();
+                    if (Objects.equals(enemyTank.getTankName(), "Buratino")) {
+                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), 0);
+                    } else if (Objects.equals(enemyTank.getTankName(), "Spectre")) {
+                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed());
+                    } else {
+                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed() * 2.0f);
+                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed());
+                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed() * 0.75f);
+                    }
                 }
 
-                if (keycode == Input.Keys.P)
-                {
+                if (keycode == Input.Keys.P) {
                     game.setScreen(new PauseMenu(game));
                 }
                 return true;

@@ -1,6 +1,9 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
+import org.w3c.dom.Text;
 
 public abstract class Tank {
     private final String tankName;
@@ -10,6 +13,8 @@ public abstract class Tank {
 //    private final int damagePerShot;
     private final Bullet bullet;
     private Body body;
+    protected TextureRegion textureRegion;
+    protected Texture battleScreenSprite = new Texture("BattleScreen/BattleScreenSprite.png");
 
     public Tank(String tankName, int healthCapacity, int moveSpeed, float dps, int bulletSpeed) {
         this.tankName = tankName;
@@ -43,6 +48,9 @@ public abstract class Tank {
     }
     public void setBody(Body body) {
         this.body = body;
+    }
+    public TextureRegion getTextureRegion() {
+        return textureRegion;
     }
 
     public void reduceHealth(int damage) {

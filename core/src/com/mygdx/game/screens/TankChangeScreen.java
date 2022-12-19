@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.mygdx.game.Config;
 
 public class TankChangeScreen extends TankStarsScreen {
 
@@ -28,7 +29,6 @@ public class TankChangeScreen extends TankStarsScreen {
     private TextureRegion TankChangeScreenContinueButton;
     private TextureRegion TankChangeScreenExitButton;
 
-
     private SpriteBatch batch;
 
     private Stage stage;
@@ -37,6 +37,11 @@ public class TankChangeScreen extends TankStarsScreen {
     private ImageButton backButton;
     private ImageButton continueButton;
     private ImageButton exitButton;
+    private ImageButton leftArrowOne;
+    private ImageButton rightArrowOne;
+    private ImageButton leftArrowTwo;
+    private ImageButton rightArrowTwo;
+
 
     public TankChangeScreen(Game game) {
         super(game);
@@ -44,14 +49,25 @@ public class TankChangeScreen extends TankStarsScreen {
 
     @Override
     public void show() {
-
         TankChangeScreenSprite = new Texture("TankChange/TankChangeSprite.png");
+        Texture BuratinoTankTexture = new Texture("BattleScreen/BuratinoTank.png");
+
+        // Initialie an array of TextureRegions
+        final int[] i = {0};
+        final int[] j = {1};
+        final TextureRegion[] tankTextureRegions = new TextureRegion[3];
+        tankTextureRegions[0] = new TextureRegion(TankChangeScreenSprite, 423, 144, 430, 303); // SpectreTank
+        tankTextureRegions[1] = new TextureRegion(TankChangeScreenSprite, 0, 144, 423, 303); // AtomicTank
+        tankTextureRegions[2] = new TextureRegion(new Texture("TankChange/BuratinoTank.png"), 0, 0, 444, 328);
+        TankChangeScreenPlayer1Tank = tankTextureRegions[i[0]];
+        TankChangeScreenPlayer2Tank = tankTextureRegions[j[0] % 3];
+//        TankChangeScreenPlayer1Tank = new TextureRegion(TankChangeScreenSprite, 423, 144, 430, 303);
+//        TankChangeScreenPlayer2Tank = new TextureRegion(TankChangeScreenSprite, 0, 144, 423, 303);
+
         TankChangeScreenBackground = new TextureRegion(TankChangeScreenSprite, 0, 450, 960, 540);
         TankChangeScreenLogo = new TextureRegion(TankChangeScreenSprite, 166, 0, 286, 144);
         TankChangeScreenMusic = new TextureRegion(TankChangeScreenSprite, 38, 0, 39, 32);
         TankChangeScreenSound = new TextureRegion(TankChangeScreenSprite, 77, 0, 41, 39);
-        TankChangeScreenPlayer1Tank = new TextureRegion(TankChangeScreenSprite, 423, 144, 430, 303);
-        TankChangeScreenPlayer2Tank = new TextureRegion(TankChangeScreenSprite, 0, 144, 423, 303);
         TankChangeScreenBackButton = new TextureRegion(TankChangeScreenSprite, 0, 0, 38, 40);
         TankChangeScreenContinueButton = new TextureRegion(TankChangeScreenSprite, 452, 0, 287, 75);
         TankChangeScreenExitButton = new TextureRegion(TankChangeScreenSprite, 118, 0, 48, 47);
@@ -80,11 +96,32 @@ public class TankChangeScreen extends TankStarsScreen {
         exitButton.setPosition(888, 21);
         exitButton.setSize(50, 50);
 
+        leftArrowOne = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("TankChange/leftArrow.png"))));
+        leftArrowOne.setPosition(36, 136);
+        leftArrowOne.setSize(56, 78);
+
+        rightArrowOne = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("TankChange/rightArrow.png"))));
+        rightArrowOne.setPosition(36 + 368, 136);
+        rightArrowOne.setSize(56, 78);
+
+        leftArrowTwo = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("TankChange/leftArrow.png"))));
+        leftArrowTwo.setPosition(36 + 467, 136);
+        leftArrowTwo.setSize(56, 78);
+
+        rightArrowTwo = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture("TankChange/rightArrow.png"))));
+        rightArrowTwo.setPosition(36 + 826, 136);
+        rightArrowTwo.setSize(56, 78);
+
+
         stage.addActor(musicButton);
         stage.addActor(soundButton);
         stage.addActor(backButton);
         stage.addActor(continueButton);
         stage.addActor(exitButton);
+        stage.addActor(leftArrowOne);
+        stage.addActor(rightArrowOne);
+        stage.addActor(leftArrowTwo);
+        stage.addActor(rightArrowTwo);
 
         musicButton.addListener(new ClickListener() {
             @Override
@@ -112,6 +149,8 @@ public class TankChangeScreen extends TankStarsScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Continue Button Clicked");
+                Config.getInstance().setPlayerTank(i[0]);
+                Config.getInstance().setEnemyTank(j[0]);
                 game.setScreen(new BattleScreen(game));
             }
         });
@@ -121,6 +160,43 @@ public class TankChangeScreen extends TankStarsScreen {
             public void clicked(InputEvent event, float x, float y) {
                 System.out.println("Exit Button Clicked");
                 Gdx.app.exit();
+            }
+        });
+
+        leftArrowOne.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Left Arrow One Clicked");
+                i[0] = (i[0] - 1) % 3;
+                if (i[0] == -1) i[0] = 2;
+                TankChangeScreenPlayer1Tank = tankTextureRegions[i[0] % 3];
+            }
+        });
+        rightArrowOne.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Right Arrow One Clicked");
+                i[0] = (i[0] + 1) % 3;
+                if (i[0] == -1) i[0] = 2;
+                TankChangeScreenPlayer1Tank = tankTextureRegions[i[0] % 3];
+            }
+        });
+        leftArrowTwo.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Left Arrow Two Clicked");
+                j[0] = (j[0] - 1) % 3;
+                if (j[0] == -1) j[0] = 2;
+                TankChangeScreenPlayer2Tank = tankTextureRegions[j[0] % 3];
+            }
+        });
+        rightArrowTwo.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Right Arrow Two Clicked");
+                j[0] = (j[0] + 1) % 3;
+                if (j[0] == -1) j[0] = 2;
+                TankChangeScreenPlayer2Tank = tankTextureRegions[j[0] % 3];
             }
         });
 
