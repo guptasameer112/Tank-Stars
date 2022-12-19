@@ -250,6 +250,9 @@ public class BattleScreen extends TankStarsScreen {
     ProgressBar progressBar1;
     ProgressBar progressBar2;
 
+    private Texture playerHealthBar = new Texture("BattleScreen/player 1 health.png");
+    private Texture enemyHealthBar = new Texture("BattleScreen/player 2 health.png");
+
     // World2D
     private World world;
     private Box2DDebugRenderer debugRenderer;
@@ -594,26 +597,31 @@ public class BattleScreen extends TankStarsScreen {
 //        });
 
         // create a progress bar
-        ProgressBar.ProgressBarStyle progressBarStyle = new ProgressBar.ProgressBarStyle();
-        progressBarStyle.background = new TextureRegionDrawable(battleScreenPlayer1Health);
-        progressBarStyle.knob = new TextureRegionDrawable(battleScreenPlayer1Health);
-        progressBarStyle.knobBefore = new TextureRegionDrawable(battleScreenPlayer1Health);
-        progressBar1 = new ProgressBar(0, 100, 1, false, progressBarStyle);
-        progressBar1.setPosition(207, 448);
-        progressBar1.setSize(277, 45);
-
-        // create a progress bar
-        ProgressBar.ProgressBarStyle progressBarStyle2 = new ProgressBar.ProgressBarStyle();
-        progressBarStyle2.background = new TextureRegionDrawable(battleScreenPlayer2Health);
-        progressBarStyle2.knob = new TextureRegionDrawable(battleScreenPlayer2Health);
-        progressBarStyle2.knobBefore = new TextureRegionDrawable(battleScreenPlayer2Health);
-
-        progressBar2 = new ProgressBar(0, 100, 1, false, progressBarStyle2);
-        progressBar2.setPosition(484, 448);
-        progressBar2.setSize(277, 45);
-
-        stage.addActor(progressBar1);
-        stage.addActor(progressBar2);
+//        ProgressBar.ProgressBarStyle progressBarStyle = new ProgressBar.ProgressBarStyle();
+////        progressBarStyle.background = new TextureRegionDrawable(battleScreenPlayer1Health);
+//        progressBarStyle.knob = new TextureRegionDrawable(battleScreenPlayer1Health);
+//        progressBarStyle.knobBefore = new TextureRegionDrawable(battleScreenPlayer1Health);
+//        progressBar1 = new ProgressBar(0, playerTank.getHealthCapacity(), 1, false, progressBarStyle);
+//        progressBar1.setPosition(207, 448);
+//        progressBar1.setSize(277, 45);
+//        progressBar1.setValue(playerTank.getCurrentHealth());
+//
+//        // create a progress bar
+//        ProgressBar.ProgressBarStyle progressBarStyle2 = new ProgressBar.ProgressBarStyle();
+//        progressBarStyle2.background = new TextureRegionDrawable(battleScreenPlayer2Health);
+//        progressBarStyle2.knob = new TextureRegionDrawable(battleScreenPlayer2Health);
+//        progressBarStyle2.knobBefore = new TextureRegionDrawable(battleScreenPlayer2Health);
+//
+//        progressBarStyle2 = new ProgressBar.ProgressBarStyle(
+//
+//        progressBar2 = new ProgressBar(0, enemyTank.getHealthCapacity(), 1, false, progressBarStyle2);
+//        progressBar2.setPosition(484, 448);
+//        progressBar2.setSize(277, 45);
+//        progressBar2.setValue(enemyTank.getCurrentHealth());
+//
+//
+//        stage.addActor(progressBar1);
+//        stage.addActor(progressBar2);
 
 
     }
@@ -631,6 +639,7 @@ public class BattleScreen extends TankStarsScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Batch batch = new SpriteBatch();
         batch.begin();
+
         batch.draw(battleScreenBackground, 0, 0);
         batch.draw(battleScreenEarth, 750, 288);
 //        batch.draw(battleScreenPlayer1Health, 207, 448);
@@ -638,6 +647,8 @@ public class BattleScreen extends TankStarsScreen {
 //        batch.draw(battleScreenPlayer2Health, 484, 444);
         batch.draw(battleScreenPlaye2, 612, 454);
         batch.draw(battleScreenRedPlanet, 523, 299);
+        batch.draw(playerHealthBar, 207, 448, 277 * ((float) playerTank.getCurrentHealth() / playerTank.getHealthCapacity()), 45);
+        batch.draw(enemyHealthBar, 484, 448, 277 * ((float) enemyTank.getCurrentHealth() / enemyTank.getHealthCapacity()), 45);
         batch.draw(battleScreenLogo, 404, 381);
         batch.draw(battleScreenRock1, 3, 160);
         batch.draw(battleScreenRock2, 264, 175);
@@ -669,6 +680,9 @@ public class BattleScreen extends TankStarsScreen {
                 bullets.remove(bullet);
                 world.destroyBody(bullet.getBody());
                 enemyTank.reduceHealth((int) playerTank.getDPS());
+
+//                progressBar2.setValue(enemyTank.getCurrentHealth());
+
                 System.out.println("Enemy tank health: " + enemyTank.getCurrentHealth());
                 if (enemyTank.getCurrentHealth() <= 0) {
                     batch.begin();
@@ -698,6 +712,9 @@ public class BattleScreen extends TankStarsScreen {
                 enemyBullets.remove(bullet);
                 world.destroyBody(bullet.getBody());
                 playerTank.reduceHealth((int) enemyTank.getDPS());
+
+//                progressBar1.setValue(playerTank.getCurrentHealth());
+
                 System.out.println("Player tank health: " + playerTank.getCurrentHealth());
                 if (playerTank.getCurrentHealth() <= 0) {
                     batch.begin();
