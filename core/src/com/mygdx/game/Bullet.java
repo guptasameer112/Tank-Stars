@@ -3,7 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.physics.box2d.Body;
 
 public class Bullet {
-//    private int direction;
+    //    private int direction;
     private final Tank ownerTank;
     private Body body;
     private final float damage;

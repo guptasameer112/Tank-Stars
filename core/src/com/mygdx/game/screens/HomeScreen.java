@@ -109,7 +109,7 @@ public class HomeScreen extends TankStarsScreen {
         batch.draw(homeScreenBackground, 0, 0);
         batch.draw(homeScreenTank, 68, 94);
         batch.draw(homeScreenFire, 242, 115);
-        batch.draw(homeScreenStarsLogo, 376, 347);
+        batch.draw(homeScreenStarsLogo, 344, 346);
 //        batch.draw(homeScreenGroundLine, 0, 96);
         batch.draw(homeScreenMusic, 831, 467);
         batch.draw(homeScreenSound, 883, 466);

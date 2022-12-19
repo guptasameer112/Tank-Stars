@@ -46,7 +46,7 @@ public class StartScreen extends TankStarsScreen {
 
         startScreenSprite = new Texture("StartScreen/StartScreenSprite.png");
         startScreenBackground = new TextureRegion(startScreenSprite, 0, 330, 960, 540);
-        tankStarsLogo = new TextureRegion(startScreenSprite, 0, 75, 307, 144);
+        tankStarsLogo = new TextureRegion(startScreenSprite, 0, 78, 309, 160);
         startScreenGroundLine = new TextureRegion(startScreenSprite, 0, 327, 960, 3);
         startScreenMusic = new TextureRegion(startScreenSprite, 0, 0, 39, 32);
         startScreenSound = new TextureRegion(startScreenSprite, 77, 0, 41, 39);

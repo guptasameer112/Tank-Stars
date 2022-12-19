@@ -181,10 +181,12 @@
 package com.mygdx.game.screens;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -192,21 +194,38 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.game.*;
 
 import java.util.ArrayList;
 
+import static java.lang.Thread.sleep;
+
 
 public class BattleScreen extends TankStarsScreen {
+
+    int winner;
 
     private Batch batch;
     private Stage stage;
 
     // Images
     private Texture battleScreenSprite;
-    private Texture BulletImage;
+
+    private Texture GameOverText;
+    private Texture Player1WinsText;
+    private Texture Player2WinsText;
+    private Texture WinText;
+
+    private Texture pauseMenuSprite;
+    private TextureRegion pauseMenuBackground;
+    private TextureRegion pauseMenuGeneralImage;
+    private TextureRegion pauseMenuOuterRectangle;
+    private TextureRegion pauseMenuUpperRectangle;
+
     private TextureRegion battleScreenBackground;
     private TextureRegion battleScreenEarth;
     private TextureRegion battleScreenLogo;
@@ -227,6 +246,9 @@ public class BattleScreen extends TankStarsScreen {
 
     ImageButton.ImageButtonStyle style;
     ImageButton menubutton;
+
+    ProgressBar progressBar1;
+    ProgressBar progressBar2;
 
     // World2D
     private World world;
@@ -319,13 +341,11 @@ public class BattleScreen extends TankStarsScreen {
 
     @Override
     public void show() {
-        batch = new SpriteBatch();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
 
         // Images
         battleScreenSprite = new Texture("BattleScreen/BattleScreenSprite.png");
-        BulletImage = new Texture("BattleScreen/Bullet.png");
         battleScreenBackground = new TextureRegion(battleScreenSprite, 0, 454, 960, 540);
         battleScreenEarth = new TextureRegion(battleScreenSprite, 596, 51, 153, 156);
         battleScreenLogo = new TextureRegion(battleScreenSprite, 449, 51, 147, 149);
@@ -343,6 +363,17 @@ public class BattleScreen extends TankStarsScreen {
         battleScreenGround = new TextureRegion(battleScreenSprite, 0, 207, 960, 247);
         battleScreenPlayerTank = new TextureRegion(battleScreenSprite, 0, 51, 86, 56);
         battleScreenEnemyTank = new TextureRegion(battleScreenSprite, 86, 51, 88, 62);
+        GameOverText = new Texture("PauseMenu/GameOver.png");
+        Player1WinsText = new Texture("PauseMenu/Player1.png");
+        Player2WinsText = new Texture("PauseMenu/Player2.png");
+        WinText = new Texture("PauseMenu/Wins.png");
+        WinText.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        pauseMenuSprite = new Texture("PauseMenu/PauseMenuSprite.png");
+        pauseMenuBackground = new TextureRegion(pauseMenuSprite, 0, 0, 240, 426);
+        pauseMenuGeneralImage = new TextureRegion(pauseMenuSprite, 40, 426, 141, 142);
+        pauseMenuOuterRectangle = new TextureRegion(pauseMenuSprite, 0, 568, 246, 432);
+        pauseMenuUpperRectangle = new TextureRegion(pauseMenuSprite, 0, 1088, 172, 66);
+
 
 
         style = new ImageButton.ImageButtonStyle();
@@ -350,14 +381,17 @@ public class BattleScreen extends TankStarsScreen {
         menubutton = new ImageButton(style);
         menubutton.setPosition(27, 463);
         menubutton.setSize(55, 51);
+
+        // if menu button is pressed, set screen to pauseMenu
+
         menubutton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-            game.setScreen(new StartScreen(game));
+                game.setScreen(new PauseMenu(game));
             }
         });
-        stage.addActor(menubutton);
 
+        stage.addActor(menubutton);
 
         // World2D
         world = new World(new Vector2(0, -9.8f), true);
@@ -378,6 +412,7 @@ public class BattleScreen extends TankStarsScreen {
         groundCoords.add(new Vector2(960, 234));
         createWorld();
 
+
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
@@ -393,11 +428,16 @@ public class BattleScreen extends TankStarsScreen {
                 if (keycode == Input.Keys.RIGHT) {
                     enemyTank.getBody().applyLinearImpulse((float) enemyTank.getMoveSpeed(), 0, enemyTank.getBody().getPosition().x, enemyTank.getBody().getPosition().y, true);
                 }
-                if (keycode == Input.Keys.SPACE) {
+                if (keycode == Input.Keys.G) {
                     createBullet();
                 }
-                if (keycode == Input.Keys.G) {
+                if (keycode == Input.Keys.SPACE) {
                     createEnemyBullet();
+                }
+
+                if (keycode == Input.Keys.P)
+                {
+                    game.setScreen(new PauseMenu(game));
                 }
                 return true;
             }
@@ -426,6 +466,30 @@ public class BattleScreen extends TankStarsScreen {
                 return true;
             }
         });
+
+        // create a progress bar
+        ProgressBar.ProgressBarStyle progressBarStyle = new ProgressBar.ProgressBarStyle();
+        progressBarStyle.background = new TextureRegionDrawable(battleScreenPlayer1Health);
+        progressBarStyle.knob = new TextureRegionDrawable(battleScreenPlayer1Health);
+        progressBarStyle.knobBefore = new TextureRegionDrawable(battleScreenPlayer1Health);
+        progressBar1 = new ProgressBar(0, 100, 1, false, progressBarStyle);
+        progressBar1.setPosition(207, 448);
+        progressBar1.setSize(277, 45);
+
+        // create a progress bar
+        ProgressBar.ProgressBarStyle progressBarStyle2 = new ProgressBar.ProgressBarStyle();
+        progressBarStyle2.background = new TextureRegionDrawable(battleScreenPlayer2Health);
+        progressBarStyle2.knob = new TextureRegionDrawable(battleScreenPlayer2Health);
+        progressBarStyle2.knobBefore = new TextureRegionDrawable(battleScreenPlayer2Health);
+
+        progressBar2 = new ProgressBar(0, 100, 1, false, progressBarStyle2);
+        progressBar2.setPosition(484, 448);
+        progressBar2.setSize(277, 45);
+
+        stage.addActor(progressBar1);
+        stage.addActor(progressBar2);
+
+
     }
 
 
@@ -438,10 +502,10 @@ public class BattleScreen extends TankStarsScreen {
         batch.begin();
         batch.draw(battleScreenBackground, 0, 0);
         batch.draw(battleScreenEarth, 750, 288);
-        batch.draw(battleScreenPlayer1Health, 207, 448);
-        batch.draw(battleScreenPlayer1, 278, 455);
-        batch.draw(battleScreenPlayer2Health, 484, 444);
-        batch.draw(battleScreenPlaye2, 612, 451);
+//        batch.draw(battleScreenPlayer1Health, 207, 448);
+        batch.draw(battleScreenPlayer1, 278, 450);
+//        batch.draw(battleScreenPlayer2Health, 484, 444);
+        batch.draw(battleScreenPlaye2, 612, 454);
         batch.draw(battleScreenRedPlanet, 523, 299);
         batch.draw(battleScreenLogo, 404, 381);
         batch.draw(battleScreenRock1, 3, 160);
@@ -473,6 +537,16 @@ public class BattleScreen extends TankStarsScreen {
                 enemyTank.reduceHealth((int) playerTank.getDPS());
                 System.out.println("Enemy tank health: " + enemyTank.getCurrentHealth());
                 if (enemyTank.getCurrentHealth() <= 0) {
+                    batch.begin();
+                    batch.draw(pauseMenuOuterRectangle, 345, 39);
+                    batch.draw(pauseMenuBackground, 348, 42);
+                    batch.draw(pauseMenuGeneralImage, 398, 267);
+                    batch.draw(pauseMenuUpperRectangle, 384, 434);
+                    batch.draw(GameOverText, 419, 460);
+                    batch.draw(Player1WinsText, 391, 165);
+                    batch.draw(WinText, 395, 96);
+                    batch.end();
+                    pause();
                     System.out.println("Enemy tank destroyed");
                     world.destroyBody(enemyTank.getBody());
                     Gdx.app.exit();
@@ -490,10 +564,18 @@ public class BattleScreen extends TankStarsScreen {
                 playerTank.reduceHealth((int) enemyTank.getDPS());
                 System.out.println("Player tank health: " + playerTank.getCurrentHealth());
                 if (playerTank.getCurrentHealth() <= 0) {
+                    batch.begin();
+                    batch.draw(pauseMenuOuterRectangle, 345, 39);
+                    batch.draw(pauseMenuBackground, 348, 42);
+                    batch.draw(pauseMenuGeneralImage, 398, 267);
+                    batch.draw(pauseMenuUpperRectangle, 384, 434);
+                    batch.draw(GameOverText, 419, 460);
+                    batch.draw(Player2WinsText, 391, 165);
+                    batch.draw(WinText, 395, 96);
+                    batch.end();
+                    pause();
                     System.out.println("Player tank destroyed");
                     world.destroyBody(playerTank.getBody());
-                    // Stop the game
-                    // Show game over screen
                     Gdx.app.exit();
                 }
                 break;
@@ -530,5 +612,22 @@ public class BattleScreen extends TankStarsScreen {
         stage.dispose();
         world.dispose();
         debugRenderer.dispose();
+    }
+
+    @Override
+    public void pause() {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void resume() {
+    }
+
+    @Override
+    public void resize(int width, int height) {
     }
 }

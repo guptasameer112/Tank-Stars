@@ -58,8 +58,6 @@ public class TankChangeScreen extends TankStarsScreen {
         TankChangeScreenGroundLine = new TextureRegion(TankChangeScreenSprite, 0, 820, 960, 96);
 
         batch = new SpriteBatch();
-
-
         stage = new Stage();
 
         musicButton = new ImageButton(new TextureRegionDrawable(TankChangeScreenMusic));
@@ -75,8 +73,8 @@ public class TankChangeScreen extends TankStarsScreen {
         backButton.setSize(50, 50);
 
         continueButton = new ImageButton(new TextureRegionDrawable(TankChangeScreenContinueButton));
-        continueButton.setPosition(350, 11);
-        continueButton.setSize(300, 100);
+        continueButton.setPosition(345, 5);
+        continueButton.setSize(300, 75);
 
         exitButton = new ImageButton(new TextureRegionDrawable(TankChangeScreenExitButton));
         exitButton.setPosition(888, 21);
@@ -139,8 +137,8 @@ public class TankChangeScreen extends TankStarsScreen {
         batch.begin();
         batch.draw(TankChangeScreenBackground, 0, 0);
         batch.draw(TankChangeScreenLogo, 352, 362);
-        batch.draw(TankChangeScreenPlayer1Tank, 36, 75);
-        batch.draw(TankChangeScreenPlayer2Tank, 498, 75);
+        batch.draw(TankChangeScreenPlayer1Tank, 36, 64);
+        batch.draw(TankChangeScreenPlayer2Tank, 498, 66);
 
         batch.end();
         stage.draw();

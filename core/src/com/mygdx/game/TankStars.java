@@ -18,14 +18,15 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
+import com.mygdx.game.screens.GameScreen;
 import com.mygdx.game.screens.HomeScreen;
 import com.mygdx.game.screens.StartScreen;
 public class TankStars extends Game {
 	@Override
 	public void create() {
-		HomeScreen homeScreen = new HomeScreen(this);
-		setScreen(homeScreen);
-		homeScreen.render(0);
+		GameScreen gameScreen = new GameScreen(this);
+		setScreen(gameScreen);
+		gameScreen.render(0);
 	}
 
 	@Override
