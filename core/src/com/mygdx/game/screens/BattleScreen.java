@@ -269,6 +269,9 @@ public class BattleScreen extends TankStarsScreen {
     private final Tank playerTank = Config.getInstance().getPlayerTank();
     private final Tank enemyTank = Config.getInstance().getEnemyTank();
 
+    private InputProcessor playerProcessor;
+    private InputProcessor enemyProcessor;
+
     public BattleScreen(Game game) {
         super(game);
     }
@@ -429,8 +432,7 @@ public class BattleScreen extends TankStarsScreen {
         groundCoords.add(new Vector2(960, 234));
         createWorld();
 
-
-        Gdx.input.setInputProcessor(new InputAdapter() {
+        playerProcessor = new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
                 if (keycode == Input.Keys.A) {
@@ -438,12 +440,6 @@ public class BattleScreen extends TankStarsScreen {
                 }
                 if (keycode == Input.Keys.D) {
                     playerTank.getBody().applyLinearImpulse((float) playerTank.getMoveSpeed(), 0, playerTank.getBody().getPosition().x, playerTank.getBody().getPosition().y, true);
-                }
-                if (keycode == Input.Keys.LEFT) {
-                    enemyTank.getBody().applyLinearImpulse((float) -enemyTank.getMoveSpeed(), 0, enemyTank.getBody().getPosition().x, enemyTank.getBody().getPosition().y, true);
-                }
-                if (keycode == Input.Keys.RIGHT) {
-                    enemyTank.getBody().applyLinearImpulse((float) enemyTank.getMoveSpeed(), 0, enemyTank.getBody().getPosition().x, enemyTank.getBody().getPosition().y, true);
                 }
                 if (keycode == Input.Keys.G) {
                     if (Objects.equals(playerTank.getTankName(), "Buratino")) {
@@ -455,19 +451,9 @@ public class BattleScreen extends TankStarsScreen {
                         createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed());
                         createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed() * 0.75f);
                     }
+                    Config.getInstance().setPlayerTwosTurn();
+                    return true;
                 }
-                if (keycode == Input.Keys.SPACE) {
-                    if (Objects.equals(enemyTank.getTankName(), "Buratino")) {
-                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), 0);
-                    } else if (Objects.equals(enemyTank.getTankName(), "Spectre")) {
-                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed());
-                    } else {
-                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed() * 2.0f);
-                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed());
-                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed() * 0.75f);
-                    }
-                }
-
                 if (keycode == Input.Keys.P) {
                     game.setScreen(new PauseMenu(game));
                 }
@@ -485,6 +471,40 @@ public class BattleScreen extends TankStarsScreen {
                     vec.x = 0;
                     playerTank.getBody().setLinearVelocity(vec);
                 }
+                return true;
+            }
+        };
+
+        enemyProcessor = new InputAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+                if (keycode == Input.Keys.LEFT) {
+                    enemyTank.getBody().applyLinearImpulse((float) -enemyTank.getMoveSpeed(), 0, enemyTank.getBody().getPosition().x, enemyTank.getBody().getPosition().y, true);
+                }
+                if (keycode == Input.Keys.RIGHT) {
+                    enemyTank.getBody().applyLinearImpulse((float) enemyTank.getMoveSpeed(), 0, enemyTank.getBody().getPosition().x, enemyTank.getBody().getPosition().y, true);
+                }
+                if (keycode == Input.Keys.SPACE) {
+                    if (Objects.equals(enemyTank.getTankName(), "Buratino")) {
+                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), 0);
+                    } else if (Objects.equals(enemyTank.getTankName(), "Spectre")) {
+                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed());
+                    } else {
+                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed() * 2.0f);
+                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed());
+                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed() * 0.75f);
+                    }
+                    Config.getInstance().setPlayerOnesTurn();
+                    return true;
+                }
+
+                if (keycode == Input.Keys.P) {
+                    game.setScreen(new PauseMenu(game));
+                }
+                return true;
+            }
+            @Override
+            public boolean keyUp(int keycode) {
                 if (keycode == Input.Keys.LEFT) {
                     Vector2 vec = enemyTank.getBody().getLinearVelocity();
                     vec.x = 0;
@@ -497,7 +517,81 @@ public class BattleScreen extends TankStarsScreen {
                 }
                 return true;
             }
-        });
+        };
+//        if (Config.getInstance().isPlayerOnesTurn()) {
+//            Gdx.input.setInputProcessor(playerProcessor);
+//        } else {
+//            Gdx.input.setInputProcessor(enemyProcessor);
+//        }
+
+//        Gdx.input.setInputProcessor(new InputAdapter() {
+//            @Override
+//            public boolean keyDown(int keycode) {
+//                if (keycode == Input.Keys.A) {
+//                    playerTank.getBody().applyLinearImpulse((float) -playerTank.getMoveSpeed(), 0, playerTank.getBody().getPosition().x, playerTank.getBody().getPosition().y, true);
+//                }
+//                if (keycode == Input.Keys.D) {
+//                    playerTank.getBody().applyLinearImpulse((float) playerTank.getMoveSpeed(), 0, playerTank.getBody().getPosition().x, playerTank.getBody().getPosition().y, true);
+//                }
+//                if (keycode == Input.Keys.LEFT) {
+//                    enemyTank.getBody().applyLinearImpulse((float) -enemyTank.getMoveSpeed(), 0, enemyTank.getBody().getPosition().x, enemyTank.getBody().getPosition().y, true);
+//                }
+//                if (keycode == Input.Keys.RIGHT) {
+//                    enemyTank.getBody().applyLinearImpulse((float) enemyTank.getMoveSpeed(), 0, enemyTank.getBody().getPosition().x, enemyTank.getBody().getPosition().y, true);
+//                }
+//                if (keycode == Input.Keys.G) {
+//                    if (Objects.equals(playerTank.getTankName(), "Buratino")) {
+//                        createBullet(playerTank.getBulletType().getSpeed(), 0);
+//                    } else if (Objects.equals(playerTank.getTankName(), "Spectre")) {
+//                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed());
+//                    } else {
+//                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed() * 2.0f);
+//                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed());
+//                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed() * 0.75f);
+//                    }
+//                }
+//                if (keycode == Input.Keys.SPACE) {
+//                    if (Objects.equals(enemyTank.getTankName(), "Buratino")) {
+//                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), 0);
+//                    } else if (Objects.equals(enemyTank.getTankName(), "Spectre")) {
+//                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed());
+//                    } else {
+//                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed() * 2.0f);
+//                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed());
+//                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed() * 0.75f);
+//                    }
+//                }
+//
+//                if (keycode == Input.Keys.P) {
+//                    game.setScreen(new PauseMenu(game));
+//                }
+//                return true;
+//            }
+//            @Override
+//            public boolean keyUp(int keycode) {
+//                if (keycode == Input.Keys.A) {
+//                    Vector2 vec = playerTank.getBody().getLinearVelocity();
+//                    vec.x = 0;
+//                    playerTank.getBody().setLinearVelocity(vec);
+//                }
+//                if (keycode == Input.Keys.D) {
+//                    Vector2 vec = playerTank.getBody().getLinearVelocity();
+//                    vec.x = 0;
+//                    playerTank.getBody().setLinearVelocity(vec);
+//                }
+//                if (keycode == Input.Keys.LEFT) {
+//                    Vector2 vec = enemyTank.getBody().getLinearVelocity();
+//                    vec.x = 0;
+//                    enemyTank.getBody().setLinearVelocity(vec);
+//                }
+//                if (keycode == Input.Keys.RIGHT) {
+//                    Vector2 vec = enemyTank.getBody().getLinearVelocity();
+//                    vec.x = 0;
+//                    enemyTank.getBody().setLinearVelocity(vec);
+//                }
+//                return true;
+//            }
+//        });
 
         // create a progress bar
         ProgressBar.ProgressBarStyle progressBarStyle = new ProgressBar.ProgressBarStyle();
@@ -528,6 +622,11 @@ public class BattleScreen extends TankStarsScreen {
     @Override
     public void render(float delta) {
         stage.act(delta);
+        if (Config.getInstance().isPlayerOnesTurn()) {
+            Gdx.input.setInputProcessor(playerProcessor);
+        } else {
+            Gdx.input.setInputProcessor(enemyProcessor);
+        }
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Batch batch = new SpriteBatch();

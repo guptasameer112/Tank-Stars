@@ -12,6 +12,17 @@ public class Config {
     }
     private Tank playerTank;
     private Tank enemyTank;
+    private boolean playerOnesTurn = true;
+
+    public void setPlayerOnesTurn() {
+        playerOnesTurn = true;
+    }
+    public void setPlayerTwosTurn() {
+        playerOnesTurn = false;
+    }
+    public boolean isPlayerOnesTurn() {
+        return playerOnesTurn;
+    }
 
     public void setPlayerTank(int index) {
         switch (index) {
