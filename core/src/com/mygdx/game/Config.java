@@ -1,7 +1,21 @@
 package com.mygdx.game;
 
-public class Config {
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+
+import java.io.*;
+
+public class Config implements Serializable {
+    private static final long serialVersionUID = 2L;
     private static Config instance = null;
+    private Tank playerTank;
+    private Tank enemyTank;
+    private boolean playerOnesTurn = true;
+    private Vector2 playerTankPosition;
+    private int x1, y1, x2, y2;
+    private Vector2 enemyTankPosition;
+
     public static Config getInstance() {
         if (instance == null) {
             instance = new Config();
@@ -9,10 +23,9 @@ public class Config {
         return instance;
     }
     private Config() {
+        playerTankPosition = new Vector2(278, 450);
+        enemyTankPosition = new Vector2(612, 454);
     }
-    private Tank playerTank;
-    private Tank enemyTank;
-    private boolean playerOnesTurn = true;
 
     public void setPlayerOnesTurn() {
         playerOnesTurn = true;
@@ -63,4 +76,76 @@ public class Config {
         return enemyTank;
     }
 
+//    public void setPlayerOnePosition(int x, int y) {
+//        playerTankPosition = new Vector2(x, y);
+//    }
+//    public void setPlayerTwoPosition(int x, int y) {
+//        enemyTankPosition = new Vector2(x, y);
+//    }
+    public void setPlayerTankPosition(Vector2 playerTankPosition) {
+        this.playerTankPosition = playerTankPosition;
+    }
+    public void setEnemyTankPosition(Vector2 enemyTankPosition) {
+        this.enemyTankPosition = enemyTankPosition;
+    }
+    public Vector2 getPlayerTankPosition() {
+        return playerTankPosition;
+    }
+    public Vector2 getEnemyTankPosition() {
+        return enemyTankPosition;
+    }
+
+    public void reset() {
+        playerTank.setHealth(playerTank.getHealthCapacity());
+        enemyTank.setHealth(enemyTank.getHealthCapacity());
+//        playerTank = null;
+//        enemyTank = null;
+//        playerOnesTurn = true;
+//        playerTankPosition = null;
+//        enemyTankPosition = null;
+    }
+    public void save() {
+        getInstance().setPlayerTankPosition(playerTank.getBody().getPosition());
+        getInstance().setEnemyTankPosition(enemyTank.getBody().getPosition());
+        System.out.println("Saving...");
+        System.out.println("Player tank position: " + playerTankPosition);
+        System.out.println("Enemy tank position: " + enemyTankPosition);
+        try {
+            serialize();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void load() {
+        try {
+            deserialize();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Player tank position: " + playerTankPosition);
+        System.out.println("Enemy tank position: " + enemyTankPosition);
+        getInstance().getPlayerTank().battleScreenSprite =  new Texture("BattleScreen/BattleScreenSprite.png");
+        getInstance().getEnemyTank().battleScreenSprite =  new Texture("BattleScreen/BattleScreenSprite.png");
+        getInstance().getPlayerTank().setTextureRegion();
+        getInstance().getEnemyTank().setTextureRegion();
+        getInstance().setPlayerTankPosition(new Vector2(x1, y1));
+        getInstance().setEnemyTankPosition(new Vector2(x2, y2));
+//        playerTank.getBody().setTransform(playerTankPosition, 0);
+//        enemyTank.getBody().setTransform(enemyTankPosition, 0);
+    }
+    public void serialize() throws IOException {
+        FileOutputStream fileOut = new FileOutputStream("saveconfig.cfg");
+        ObjectOutputStream out = new ObjectOutputStream(fileOut);
+        out.writeObject(instance);
+        out.close();
+        fileOut.close();
+
+    }
+    public void deserialize() throws IOException, ClassNotFoundException {
+        FileInputStream fileIn = new FileInputStream("saveconfig.cfg");
+        ObjectInputStream in = new ObjectInputStream(fileIn);
+        instance = (Config) in.readObject();
+        in.close();
+        fileIn.close();
+    }
 }

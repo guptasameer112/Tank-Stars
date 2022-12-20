@@ -9,5 +9,11 @@ public class BuratinoTank extends Tank {
         Texture buratinoTankTexture = new Texture("BattleScreen/BuratinoTank.png");
         this.textureRegion = new TextureRegion(buratinoTankTexture, 0, 0, 86, 64);
     }
+
+    @Override
+    public void setTextureRegion() {
+        Texture buratinoTankTexture = new Texture("BattleScreen/BuratinoTank.png");
+        this.textureRegion = new TextureRegion(buratinoTankTexture, 0, 0, 86, 64);
+    }
 }
 

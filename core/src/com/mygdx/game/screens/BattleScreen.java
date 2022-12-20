@@ -292,6 +292,7 @@ public class BattleScreen extends TankStarsScreen {
         //player tank
         BodyDef playerTankBodyDef = new BodyDef();
         playerTankBodyDef.type = BodyDef.BodyType.DynamicBody;
+//        playerTankBodyDef.position.set(Config.getInstance().getPlayerTankPosition());
         playerTankBodyDef.position.set(new Vector2(100, 220));
         playerTankBody = world.createBody(playerTankBodyDef);
         PolygonShape playerTankShape = new PolygonShape();
@@ -303,6 +304,7 @@ public class BattleScreen extends TankStarsScreen {
         //enemy tank
         BodyDef enemyTankBodyDef = new BodyDef();
         enemyTankBodyDef.type = BodyDef.BodyType.DynamicBody;
+//        enemyTankBodyDef.position.set(Config.getInstance().getEnemyTankPosition());
         enemyTankBodyDef.position.set(new Vector2(700, 220));
         enemyTankBody = world.createBody(enemyTankBodyDef);
         PolygonShape enemyTankShape = new PolygonShape();
@@ -458,6 +460,23 @@ public class BattleScreen extends TankStarsScreen {
                     return true;
                 }
                 if (keycode == Input.Keys.P) {
+                    // Get position of enemyTank
+                    Vector2 enemyTankPosition = enemyTank.getBody().getPosition();
+                    // Get position of playerTank
+                    Vector2 playerTankPosition = playerTank.getBody().getPosition();
+                    Config.getInstance().setPlayerTankPosition(playerTankPosition);
+                    Config.getInstance().setEnemyTankPosition(enemyTankPosition);
+
+//                    // Calculate distance between enemyTank and playerTank
+//                    float distance = enemyTankPosition.dst(playerTankPosition);
+//                    // If distance is less than 100, then enemyTank is in range
+//                    if (distance < 100) {
+//                        // Calculate angle between enemyTank and playerTank
+//                        float angle = (float) Math.atan2(enemyTankPosition.y - playerTankPosition.y, enemyTankPosition.x - playerTankPosition.x);
+//                        // Apply force to enemyTank
+//                        enemyTank.getBody().applyLinearImpulse((float) Math.cos(angle) * enemyTank.getMoveSpeed(), (float) Math.sin(angle) * enemyTank.getMoveSpeed(), enemyTankPosition.x, enemyTankPosition.y, true);
+//                    }
+
                     game.setScreen(new PauseMenu(game));
                 }
                 return true;
@@ -643,9 +662,11 @@ public class BattleScreen extends TankStarsScreen {
         batch.draw(battleScreenBackground, 0, 0);
         batch.draw(battleScreenEarth, 750, 288);
 //        batch.draw(battleScreenPlayer1Health, 207, 448);
-        batch.draw(battleScreenPlayer1, 278, 450);
+        batch.draw(battleScreenPlayer1, Config.getInstance().getPlayerTankPosition().x, Config.getInstance().getPlayerTankPosition().y);
+//        batch.draw(battleScreenPlayer1, 278, 450);
 //        batch.draw(battleScreenPlayer2Health, 484, 444);
-        batch.draw(battleScreenPlaye2, 612, 454);
+        batch.draw(battleScreenPlaye2, Config.getInstance().getEnemyTankPosition().x, Config.getInstance().getEnemyTankPosition().y);
+//        batch.draw(battleScreenPlaye2, 612, 454);
         batch.draw(battleScreenRedPlanet, 523, 299);
         batch.draw(playerHealthBar, 207, 448, 277 * ((float) playerTank.getCurrentHealth() / playerTank.getHealthCapacity()), 45);
         batch.draw(enemyHealthBar, 484, 448, 277 * ((float) enemyTank.getCurrentHealth() / enemyTank.getHealthCapacity()), 45);
@@ -656,7 +677,13 @@ public class BattleScreen extends TankStarsScreen {
         batch.draw(battleScreenSuperNova, 304, 299);
         batch.draw(battleScreenWhitePlanet, 75, 303);
         batch.draw(battleScreenGround, 0, 0);
-        batch.draw(battleScreenPlayerTank, playerTank.getBody().getPosition().x - 45, playerTank.getBody().getPosition().y - 40);
+        try {
+            batch.draw(battleScreenPlayerTank, playerTank.getBody().getPosition().x - 45, playerTank.getBody().getPosition().y - 40);
+        } catch (NullPointerException e) {
+            System.out.println(battleScreenPlayerTank);
+            System.out.println(playerTank.getBody());
+            System.out.println(playerTank.getBody().getPosition());
+        }
         batch.draw(battleScreenEnemyTank, enemyTank.getBody().getPosition().x - 30, enemyTank.getBody().getPosition().y - 40);
 //        batch.draw(BulletImage, bulletBody.getPosition().x - 5, bulletBody.getPosition().y - 5);
         batch.end();
@@ -681,7 +708,7 @@ public class BattleScreen extends TankStarsScreen {
                 world.destroyBody(bullet.getBody());
                 enemyTank.reduceHealth((int) playerTank.getDPS());
 
-//                progressBar2.setValue(enemyTank.getCurrentHealth());
+//                02.setValue(enemyTank.getCurrentHealth());
 
                 System.out.println("Enemy tank health: " + enemyTank.getCurrentHealth());
                 if (enemyTank.getCurrentHealth() <= 0) {

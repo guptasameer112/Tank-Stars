@@ -114,6 +114,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.mygdx.game.Config;
 
 public class SavedGamesScreen extends TankStarsScreen {
     private Texture SavedGameScreenSprite;
@@ -192,6 +193,16 @@ public class SavedGamesScreen extends TankStarsScreen {
 
         ImageButton SavedGameScreenSlot1Button = new ImageButton(SavedGameScreenSlot1ButtonStyle);
         SavedGameScreenSlot1Button.setPosition(601, 273);
+        SavedGameScreenSlot1Button.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Slot1 clicked");
+                // Load config file
+                Config.getInstance().load();
+                // Start battle screen
+                game.setScreen(new BattleScreen(game));
+            }
+        });
         stage.addActor(SavedGameScreenSlot1Button);
 
         ImageButton SavedGameScreenSlot2Button = new ImageButton(SavedGameScreenSlot2ButtonStyle);

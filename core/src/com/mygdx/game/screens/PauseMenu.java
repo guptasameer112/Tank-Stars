@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.mygdx.game.Config;
 
 public class PauseMenu extends TankStarsScreen
 {
@@ -93,6 +94,7 @@ public class PauseMenu extends TankStarsScreen
             @Override
             public void clicked(InputEvent event, float x, float y)
             {
+                Config.getInstance().reset();
                 game.setScreen(new BattleScreen(game));
             }
         });
@@ -103,6 +105,8 @@ public class PauseMenu extends TankStarsScreen
             public void clicked(InputEvent event, float x, float y)
             {
                 System.out.println("Save Game");
+                // Serialize the Config instance to a file
+                Config.getInstance().save();
             }
         });
 

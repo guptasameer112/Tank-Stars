@@ -201,7 +201,6 @@ public class TankChangeScreen extends TankStarsScreen {
         });
 
         Gdx.input.setInputProcessor(stage);
-
     }
 
     @Override

@@ -5,16 +5,20 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import org.w3c.dom.Text;
 
-public abstract class Tank {
+import java.io.Serializable;
+
+public abstract class Tank implements Serializable {
+    // Make the class serializable
+    private static final long serialVersionUID = 1L;
     private final String tankName;
     private final int healthCapacity;
     private int currentHealth;
     private final int moveSpeed;
 //    private final int damagePerShot;
     private final Bullet bullet;
-    private Body body;
-    protected TextureRegion textureRegion;
-    protected Texture battleScreenSprite = new Texture("BattleScreen/BattleScreenSprite.png");
+    private transient Body body;
+    protected transient TextureRegion textureRegion;
+    protected transient Texture battleScreenSprite = new Texture("BattleScreen/BattleScreenSprite.png");
 
     public Tank(String tankName, int healthCapacity, int moveSpeed, float dps, int bulletSpeed) {
         this.tankName = tankName;
@@ -34,6 +38,12 @@ public abstract class Tank {
     public int getCurrentHealth() {
         return currentHealth;
     }
+    public void setHealth(int health) {
+        this.currentHealth = health;
+        if (currentHealth > healthCapacity) {
+            currentHealth = healthCapacity;
+        }
+    }
     public int getMoveSpeed() {
         return moveSpeed;
     }
@@ -52,6 +62,8 @@ public abstract class Tank {
     public TextureRegion getTextureRegion() {
         return textureRegion;
     }
+
+    public abstract void setTextureRegion();
 
     public void reduceHealth(int damage) {
         if (damage > 0) {

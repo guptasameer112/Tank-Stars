@@ -2,10 +2,13 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.physics.box2d.Body;
 
-public class Bullet {
+import java.io.Serializable;
+
+public class Bullet implements Serializable {
+    private static final long serialVersionUID = 3L;
     //    private int direction;
     private final Tank ownerTank;
-    private Body body;
+    private transient Body body;
     private final float damage;
     private final int speed;
     private final int width = 20;
