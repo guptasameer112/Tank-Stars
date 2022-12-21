@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.mygdx.game.Config;
 
 public class TankChangeScreen extends TankStarsScreen {
+    private int[] i = {0};
+    private int[] j = {1};
 
     private Texture TankChangeScreenSprite;
 
@@ -22,6 +24,10 @@ public class TankChangeScreen extends TankStarsScreen {
     private TextureRegion TankChangeScreenLogo;
     private TextureRegion TankChangeScreenMusic;
     private TextureRegion TankChangeScreenSound;
+    private Texture PlayerTankText;
+    private Texture EnemyTankText;
+    private Texture PlayerTank;
+    private Texture EnemyTank;
     private TextureRegion TankChangeScreenPlayer1Tank;
     private TextureRegion TankChangeScreenPlayer2Tank;
     private TextureRegion TankChangeScreenGroundLine;
@@ -51,13 +57,18 @@ public class TankChangeScreen extends TankStarsScreen {
     public void show() {
         TankChangeScreenSprite = new Texture("TankChange/TankChangeSprite.png");
         Texture BuratinoTankTexture = new Texture("BattleScreen/BuratinoTank.png");
+        Texture PlayerTank = new Texture("TankChange/PlayerTank.png");
+        Texture EnemyTank = new Texture("TankChange/EnemyTank.png");
+
+
 
         // Initialie an array of TextureRegions
-        final int[] i = {0};
-        final int[] j = {1};
+
         final TextureRegion[] tankTextureRegions = new TextureRegion[3];
-        tankTextureRegions[0] = new TextureRegion(TankChangeScreenSprite, 423, 144, 430, 303); // SpectreTank
-        tankTextureRegions[1] = new TextureRegion(TankChangeScreenSprite, 0, 144, 423, 303); // AtomicTank
+//        tankTextureRegions[0] = new TextureRegion(TankChangeScreenSprite, 423, 144, 430, 303); // SpectreTank
+        tankTextureRegions[0] = new TextureRegion(PlayerTank, -45,30, 324, 217); // SpectreTank
+        tankTextureRegions[1] = new TextureRegion(EnemyTank, -45, -1, 324, 247); // AtomicTank
+
         tankTextureRegions[2] = new TextureRegion(new Texture("TankChange/BuratinoTank.png"), 0, 0, 311, 212);
         TankChangeScreenPlayer1Tank = tankTextureRegions[i[0]];
         TankChangeScreenPlayer2Tank = tankTextureRegions[j[0] % 3];
@@ -74,6 +85,8 @@ public class TankChangeScreen extends TankStarsScreen {
         TankChangeScreenGroundLine = new TextureRegion(TankChangeScreenSprite, 0, 820, 960, 96);
 
         batch = new SpriteBatch();
+        PlayerTankText = new Texture("TankChange/PlayerText1.png");
+        EnemyTankText = new Texture("TankChange/PlayerText2.png");
         stage = new Stage();
 
         musicButton = new ImageButton(new TextureRegionDrawable(TankChangeScreenMusic));
@@ -212,8 +225,16 @@ public class TankChangeScreen extends TankStarsScreen {
         batch.begin();
         batch.draw(TankChangeScreenBackground, 0, 0);
         batch.draw(TankChangeScreenLogo, 352, 362);
-        batch.draw(TankChangeScreenPlayer1Tank, 36, 64);
-        batch.draw(TankChangeScreenPlayer2Tank, 498, 66);
+        batch.draw(PlayerTankText, 150, 300);
+        batch.draw(EnemyTankText, 150 + 467, 300);
+        if (i[0] == 0) batch.draw(TankChangeScreenPlayer1Tank, 36, 64);
+        else if (i[0] == 1) batch.draw(TankChangeScreenPlayer1Tank, 36, 64);
+        else if (i[0] == 2) batch.draw(TankChangeScreenPlayer1Tank, 80, 100);
+
+        if (j[0] == 0) batch.draw(TankChangeScreenPlayer2Tank, 498, 66);
+        else if (j[0] == 1) batch.draw(TankChangeScreenPlayer2Tank, 498, 66);
+        else if (j[0] == 2) batch.draw(TankChangeScreenPlayer2Tank, 555, 100);
+//        batch.draw(TankChangeScreenPlayer2Tank, 498, 66);
 
         batch.end();
         stage.draw();

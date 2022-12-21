@@ -1,183 +1,3 @@
-//
-//package com.mygdx.game.screens;
-//
-//import com.badlogic.gdx.Game;
-//import com.badlogic.gdx.Gdx;
-//import com.badlogic.gdx.Input;
-//import com.badlogic.gdx.graphics.GL20;
-//import com.badlogic.gdx.graphics.OrthographicCamera;
-//import com.badlogic.gdx.graphics.Texture;
-//import com.badlogic.gdx.graphics.g2d.Batch;
-//import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-//import com.badlogic.gdx.graphics.g2d.TextureRegion;
-//import com.badlogic.gdx.math.Vector2;
-//import com.badlogic.gdx.physics.box2d.*;
-//import com.badlogic.gdx.scenes.scene2d.InputEvent;
-//import com.badlogic.gdx.scenes.scene2d.Stage;
-//import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-//import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-//import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-//
-//
-//
-//public class BattleScreen extends TankStarsScreen {
-//
-////    Scene2D UI
-////    private Stage stage;
-////    private ImageButton button;
-////    private ImageButton.ImageButtonStyle style;
-////
-//////    Box2D
-////    private World world;
-////    private Box2DDebugRenderer debugRenderer;
-////    private Body groundBody;
-//
-//    private Texture battleScreenSprite;
-//
-//    private TextureRegion battleScreenBackground;
-//    private TextureRegion battleScreenEarth;
-//    private TextureRegion battleScreenGround;
-//    private TextureRegion battleScreenLogo;
-//    private TextureRegion battleScreenPlayer1Health;
-//    private TextureRegion battleScreenPlayer1;
-//    private TextureRegion battleScreenPlayer2Health;
-//    private TextureRegion battleScreenPlaye2;
-//    private TextureRegion battleScreenRedPlanet;
-//    private TextureRegion battleScreenRock1;
-//    private TextureRegion battleScreenRock2;
-//    private TextureRegion battleScreenRock;
-//    private TextureRegion battleScreenSuperNova;
-//    private TextureRegion battleScreenTank2;
-//    private TextureRegion battleScreenTank;
-//    private TextureRegion battleScreenWhitePlanet;
-//    private TextureRegion battleScreenMenu;
-//
-//    private Batch batch;
-//
-//    private Stage stage;
-//
-//    ImageButton.ImageButtonStyle style;
-//    ImageButton button;
-//
-//
-//    public BattleScreen(Game game) {
-//        super(game);
-//    }
-//
-//    World world = new World(new Vector2(0, -9.8f), true);
-//    Box2DDebugRenderer debugRenderer = new Box2DDebugRenderer();
-//
-//    public void createGround()
-//    {
-//        //ground
-//        BodyDef groundBodyDef = new BodyDef();
-//        groundBodyDef.position.set(new Vector2(0, 0));
-//        Body groundBody = world.createBody(groundBodyDef);
-//        PolygonShape groundBox = new PolygonShape();
-//        groundBox.setAsBox(50, 1);
-//        groundBody.createFixture(groundBox, 0.0f);
-//        groundBox.dispose();
-//    }
-//
-//    public void usingChainShape()
-//    {
-//        //ground
-//        BodyDef groundBodyDef = new BodyDef();
-//        groundBodyDef.position.set(new Vector2(0, 0));
-//        Body groundBody = world.createBody(groundBodyDef);
-//        ChainShape groundBox = new ChainShape();
-//        groundBox.createChain(new Vector2[]{new Vector2(0, 0), new Vector2(50, 0), new Vector2(50, 1), new Vector2(0, 1)});
-//        groundBody.createFixture(groundBox, 0.0f);
-//        groundBox.dispose();
-//    }
-//
-//    @Override
-//    public void show() {
-//
-//        battleScreenSprite = new Texture("BattleScreen/BattleScreenSprite.png");
-//        battleScreenBackground = new TextureRegion(battleScreenSprite, 0, 416, 960, 540);
-//        battleScreenEarth = new TextureRegion(battleScreenSprite, 596, 51, 153, 156);
-////        battleScreenGround = new TextureRegion(battleScreenSprite, 0, 207, 960, 209);
-//        battleScreenLogo = new TextureRegion(battleScreenSprite, 449, 51, 147, 149);
-//        battleScreenPlayer1Health = new TextureRegion(battleScreenSprite, 261, 0, 277, 45);
-//        battleScreenPlayer1 = new TextureRegion(battleScreenSprite, 73, 0, 77, 26);
-//        battleScreenPlayer2Health = new TextureRegion(battleScreenSprite, 590, 0, 269, 49);
-//        battleScreenPlaye2 = new TextureRegion(battleScreenSprite, 0, 0, 73, 19);
-//        battleScreenRedPlanet = new TextureRegion(battleScreenSprite, 174, 51, 81, 67);
-//        battleScreenRock1 = new TextureRegion(battleScreenSprite, 538, 0, 52, 47);
-//        battleScreenRock2 = new TextureRegion(battleScreenSprite, 150, 0, 50, 33);
-//        battleScreenRock = new TextureRegion(battleScreenSprite, 200, 0, 61, 37);
-//        battleScreenSuperNova = new TextureRegion(battleScreenSprite, 255, 51, 108, 99);
-//        battleScreenTank2 = new TextureRegion(battleScreenSprite, 86, 51, 88, 62);
-//        battleScreenTank = new TextureRegion(battleScreenSprite, 0, 51, 86, 56);
-//        battleScreenWhitePlanet = new TextureRegion(battleScreenSprite, 363, 51, 86, 126);
-//        battleScreenMenu = new TextureRegion(battleScreenSprite, 859, 0, 55, 51);
-//
-//        batch = new SpriteBatch();
-//
-//        stage = new Stage();
-//
-//        style = new ImageButton.ImageButtonStyle();
-//        style.imageUp = new TextureRegionDrawable(battleScreenMenu);
-//        button = new ImageButton(style);
-//        button.setPosition(27, 463);
-//        button.setSize(55, 51);
-//        button.addListener(new ClickListener() {
-//            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                game.setScreen(new StartScreen(game));
-//            }
-//        });
-//        stage.addActor(button);
-//
-//        Gdx.input.setInputProcessor(stage);
-//
-//    }
-//    @Override
-//    public void render(float delta) {
-//        stage.act(delta);
-//        Gdx.gl.glClearColor(0, 0, 0, 1);
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//        Batch batch = new SpriteBatch();
-//        batch.begin();
-//        batch.draw(battleScreenBackground, 0, 0);
-//        batch.draw(battleScreenEarth, 750, 288);
-//        batch.draw(battleScreenPlayer1Health, 207, 448);
-//        batch.draw(battleScreenPlayer1, 278, 455);
-//        batch.draw(battleScreenPlayer2Health, 484, 444);
-//        batch.draw(battleScreenPlaye2, 612, 451);
-//        batch.draw(battleScreenRedPlanet, 523, 299);
-//        batch.draw(battleScreenLogo, 404, 381);
-//        batch.draw(battleScreenRock1, 3, 160);
-//        batch.draw(battleScreenRock2, 264, 175);
-//        batch.draw(battleScreenRock, 851, 194);
-//        batch.draw(battleScreenSuperNova, 304, 299);
-////        batch.draw(battleScreenGround, 0, 0);
-//        batch.draw(battleScreenTank2, 722, 183);
-//        batch.draw(battleScreenTank, 82, 169);
-//        batch.draw(battleScreenWhitePlanet, 75, 303);
-//        batch.end();
-//        stage.draw();
-//
-//        createGround();
-//        world.step(1/60f, 6, 2);
-//        debugRenderer.render(world, batch.getProjectionMatrix());
-//
-//
-//    }
-//    @Override
-//    public void hide() {
-//        dispose();
-//
-//    }
-//    @Override
-//    public void dispose() {
-//        battleScreenSprite.dispose();
-//    }
-//}
-
-
-
 package com.mygdx.game.screens;
 
 import com.badlogic.gdx.*;
@@ -251,11 +71,11 @@ public class BattleScreen extends TankStarsScreen {
     ProgressBar progressBar2;
 
     private Texture playerHealthBar = new Texture("BattleScreen/player 1 health.png");
-    private Texture playerTankFuel = new Texture("BattleScreen/player 1 health.png");
+    private Texture playerTankFuel = new Texture("BattleScreen/player 1 fuel.png");
 
 
     private Texture enemyHealthBar = new Texture("BattleScreen/player 2 health.png");
-    private Texture enemyTankFuel = new Texture("BattleScreen/player 2 health.png");
+    private Texture enemyTankFuel = new Texture("BattleScreen/enemy 1 fuel.png");
 
     // World2D
     private World world;
@@ -685,6 +505,8 @@ public class BattleScreen extends TankStarsScreen {
         batch.draw(battleScreenSuperNova, 304, 299);
         batch.draw(battleScreenWhitePlanet, 75, 303);
         batch.draw(battleScreenGround, 0, 0);
+        batch.draw(playerTankFuel, 100, 81, 150 * ((float) playerTank.getFuelCapacity() / 5), 20);
+        batch.draw(enemyTankFuel, 700, 81, 150 * ((float) enemyTank.getFuelCapacity() / 5), 20);
         try {
             batch.draw(battleScreenPlayerTank, playerTank.getBody().getPosition().x - 45, playerTank.getBody().getPosition().y - 40);
         } catch (NullPointerException e) {
