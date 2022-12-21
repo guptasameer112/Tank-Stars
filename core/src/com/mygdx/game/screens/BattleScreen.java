@@ -96,6 +96,8 @@ public class BattleScreen extends TankStarsScreen {
     private final Tank playerTank = Config.getInstance().getPlayerTank();
     private final Tank enemyTank = Config.getInstance().getEnemyTank();
 
+    private float shootHoldTimer = 0;
+
     private InputProcessor playerProcessor;
     private InputProcessor enemyProcessor;
 
@@ -139,6 +141,8 @@ public class BattleScreen extends TankStarsScreen {
     }
 
     public void createBullet(float speedX, float speedY) {
+        shootHoldTimer = (shootHoldTimer + 1) * 2; // +1 to set the base as 1 instead of 0, *2 to make it faster to charge up shots.
+        if (shootHoldTimer > 2.5f) shootHoldTimer = 2.5f;
         BodyDef bulletBodyDef = new BodyDef();
         bulletBodyDef.type = BodyDef.BodyType.DynamicBody;
         bulletBodyDef.position.set(new Vector2(playerTank.getBody().getPosition().x + 50, playerTank.getBody().getPosition().y + 10));
@@ -164,12 +168,15 @@ public class BattleScreen extends TankStarsScreen {
             playerTank.setFuelCapacity(5);
         }
 
-        Bullet bullet = new Bullet(playerTank.getBulletType().getDamage(), playerTank.getBulletType().getSpeed(), playerTank);
+        Bullet bullet = new Bullet(playerTank.getBulletType().getDamage() * shootHoldTimer, playerTank.getBulletType().getSpeed(), playerTank);
+        System.out.println("Created bullet with damage value " + bullet.getDamage());
         bullet.setBody(bulletBody);
         bullets.add(bullet);
     }
 
     public void createEnemyBullet(float speedX, float speedY) {
+        shootHoldTimer = (shootHoldTimer + 1) * 2; // +1 to set the base as 1 instead of 0, *2 to make it faster to charge up shots.
+        if (shootHoldTimer > 2.5f) shootHoldTimer = 2.5f;
         BodyDef bulletBodyDef = new BodyDef();
         bulletBodyDef.type = BodyDef.BodyType.DynamicBody;
         bulletBodyDef.position.set(new Vector2(enemyTank.getBody().getPosition().x - 50, enemyTank.getBody().getPosition().y + 10));
@@ -189,7 +196,8 @@ public class BattleScreen extends TankStarsScreen {
             enemyTank.setFuelCapacity(5);
         }
 
-        Bullet bullet = new Bullet(enemyTank.getBulletType().getDamage(), enemyTank.getBulletType().getSpeed(), enemyTank);
+        Bullet bullet = new Bullet(enemyTank.getBulletType().getDamage() * shootHoldTimer, enemyTank.getBulletType().getSpeed(), enemyTank);
+        System.out.println("Created enemy bullet with damage value " + bullet.getDamage());
         bullet.setBody(bulletBody);
         enemyBullets.add(bullet);
     }
@@ -283,16 +291,22 @@ public class BattleScreen extends TankStarsScreen {
                     System.out.println("Player Fuel capacity: " + playerTank.getFuelCapacity());
                 }
                 if (keycode == Input.Keys.G) {
-                    if (Objects.equals(playerTank.getTankName(), "Buratino")) {
-                        createBullet(playerTank.getBulletType().getSpeed(), 0);
-                    } else if (Objects.equals(playerTank.getTankName(), "Spectre")) {
-                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed());
-                    } else {
-                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed() * 2.0f);
-                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed());
-                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed() * 0.75f);
-                    }
-                    Config.getInstance().setPlayerTwosTurn();
+                    shootHoldTimer = 0;
+                    // Start a timer
+//                    shootHoldTimer = Gdx.graphics.getDeltaTime();
+                    // If timer is greater than 1 second, shoot
+
+
+                    // if (Objects.equals(playerTank.getTankName(), "Buratino")) {
+                    //     createBullet(playerTank.getBulletType().getSpeed(), 0);
+                    // } else if (Objects.equals(playerTank.getTankName(), "Spectre")) {
+                    //     createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed());
+                    // } else {
+                    //     createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed() * 2.0f);
+                    //     createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed());
+                    //     createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed() * 0.75f);
+                    // }
+                    // Config.getInstance().setPlayerTwosTurn();
                     return true;
                 }
                 if (keycode == Input.Keys.P) {
@@ -324,6 +338,19 @@ public class BattleScreen extends TankStarsScreen {
                     vec.x = 0;
                     playerTank.getBody().setLinearVelocity(vec);
                 }
+                if (keycode == Input.Keys.G) {
+                    System.out.println("Shoot hold timer: " + shootHoldTimer);
+                    if (Objects.equals(playerTank.getTankName(), "Buratino")) {
+                        createBullet(playerTank.getBulletType().getSpeed(), 0);
+                    } else if (Objects.equals(playerTank.getTankName(), "Spectre")) {
+                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed());
+                    } else {
+                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed() * 2.0f);
+                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed());
+                        createBullet(playerTank.getBulletType().getSpeed(), playerTank.getBulletType().getSpeed() * 0.75f);
+                    }
+                    Config.getInstance().setPlayerTwosTurn();
+                }
                 return true;
             }
         };
@@ -342,16 +369,7 @@ public class BattleScreen extends TankStarsScreen {
                     System.out.println("Enemy fuel capacity = " + enemyTank.getFuelCapacity());
                 }
                 if (keycode == Input.Keys.SPACE) {
-                    if (Objects.equals(enemyTank.getTankName(), "Buratino")) {
-                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), 0);
-                    } else if (Objects.equals(enemyTank.getTankName(), "Spectre")) {
-                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed());
-                    } else {
-                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed() * 2.0f);
-                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed());
-                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed() * 0.75f);
-                    }
-                    Config.getInstance().setPlayerOnesTurn();
+                    shootHoldTimer = 0;
                     return true;
                 }
 
@@ -366,6 +384,19 @@ public class BattleScreen extends TankStarsScreen {
                     Vector2 vec = enemyTank.getBody().getLinearVelocity();
                     vec.x = 0;
                     enemyTank.getBody().setLinearVelocity(vec);
+                }
+                if (keycode == Input.Keys.SPACE) {
+                    System.out.println("Shoot hold timer: " + shootHoldTimer);
+                    if (Objects.equals(enemyTank.getTankName(), "Buratino")) {
+                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), 0);
+                    } else if (Objects.equals(enemyTank.getTankName(), "Spectre")) {
+                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed());
+                    } else {
+                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed() * 2.0f);
+                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed());
+                        createEnemyBullet(enemyTank.getBulletType().getSpeed(), enemyTank.getBulletType().getSpeed() * 0.75f);
+                    }
+                    Config.getInstance().setPlayerOnesTurn();
                 }
                 return true;
             }
@@ -479,8 +510,17 @@ public class BattleScreen extends TankStarsScreen {
         stage.act(delta);
         if (Config.getInstance().isPlayerOnesTurn()) {
             Gdx.input.setInputProcessor(playerProcessor);
+            // check if the space bar is held
+            if (Gdx.input.isKeyPressed(Input.Keys.G)) {
+                shootHoldTimer += Gdx.graphics.getDeltaTime();
+            }
+
         } else {
             Gdx.input.setInputProcessor(enemyProcessor);
+            // check if the space bar is held
+            if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+                shootHoldTimer += Gdx.graphics.getDeltaTime();
+            }
         }
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -534,9 +574,9 @@ public class BattleScreen extends TankStarsScreen {
             if (bulletRect.collidesWith(enemyTankRect)) {
                 enemyTank.getBody().applyLinearImpulse(bullet.getSpeed(), 0, enemyTank.getBody().getPosition().x, enemyTank.getBody().getPosition().y, true);
                 enemyTank.getBody().setLinearDamping(1.0f);
+                enemyTank.reduceHealth((int) bullet.getDamage());
                 bullets.remove(bullet);
                 world.destroyBody(bullet.getBody());
-                enemyTank.reduceHealth((int) playerTank.getDPS());
 
 //                02.setValue(enemyTank.getCurrentHealth());
 
@@ -566,9 +606,9 @@ public class BattleScreen extends TankStarsScreen {
             if (playerTankRect.collidesWith(bulletRect)) {
                 playerTank.getBody().applyLinearImpulse(-bullet.getSpeed(), 0, playerTank.getBody().getPosition().x, playerTank.getBody().getPosition().y, true);
                 playerTank.getBody().setLinearDamping(1.0f);
+                playerTank.reduceHealth((int) bullet.getDamage());
                 enemyBullets.remove(bullet);
                 world.destroyBody(bullet.getBody());
-                playerTank.reduceHealth((int) enemyTank.getDPS());
 
 //                progressBar1.setValue(playerTank.getCurrentHealth());
 
