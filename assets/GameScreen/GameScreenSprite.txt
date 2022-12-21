@@ -1,0 +1,23 @@
+GameScreenSprite.png
+size: 960, 565
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Background
+  rotate: false
+  xy: 0, 0
+  size: 960, 540
+  split: 0, 0, 0, 0
+  pad: 240, 240, 135, 135
+  orig: 960, 540
+  offset: 0, 0
+  index: -1
+LoadBar
+  rotate: false
+  xy: 0, 540
+  size: 230, 25
+  split: 0, 0, 0, 0
+  pad: 58, 57, 6, 6
+  orig: 230, 25
+  offset: 0, 0
+  index: -1

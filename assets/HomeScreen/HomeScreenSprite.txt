@@ -1,0 +1,95 @@
+HomeScreenSprite.png
+size: 960, 870
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+background
+  rotate: false
+  xy: 0, 330
+  size: 960, 540
+  split: 0, 0, 0, 0
+  pad: 240, 240, 135, 135
+  orig: 960, 540
+  offset: 0, 0
+  index: -1
+Computer Button
+  rotate: false
+  xy: 128, 3
+  size: 276, 75
+  split: 0, 0, 0, 0
+  pad: 69, 69, 19, 19
+  orig: 276, 75
+  offset: 0, 0
+  index: -1
+Exit Button
+  rotate: false
+  xy: 80, 3
+  size: 48, 47
+  split: 0, 0, 0, 0
+  pad: 12, 12, 12, 12
+  orig: 48, 47
+  offset: 0, 0
+  index: -1
+Fire
+  rotate: false
+  xy: 633, 78
+  size: 238, 252
+  split: 13, 35, 27, 25
+  pad: 60, 59, 63, 63
+  orig: 238, 252
+  offset: 0, 0
+  index: -1
+Groundline
+  rotate: false
+  xy: 0, 0
+  size: 960, 3
+  split: 0, 0, 0, 0
+  pad: 240, 240, 1, 1
+  orig: 960, 3
+  offset: 0, 0
+  index: -1
+Logo
+  rotate: false
+  xy: 0, 78
+  size: 309, 160
+  split: 0, 0, 0, 0
+  pad: 77, 77, 40, 40
+  orig: 309, 160
+  offset: 0, 0
+  index: -1
+Music
+  rotate: false
+  xy: 0, 3
+  size: 39, 32
+  split: 0, 0, 0, 0
+  pad: 10, 10, 8, 8
+  orig: 39, 32
+  offset: 0, 0
+  index: -1
+Player Button
+  rotate: false
+  xy: 404, 3
+  size: 287, 75
+  split: 0, 0, 0, 0
+  pad: 72, 72, 19, 19
+  orig: 287, 75
+  offset: 0, 0
+  index: -1
+Sound
+  rotate: false
+  xy: 39, 3
+  size: 41, 39
+  split: 0, 0, 0, 0
+  pad: 10, 10, 10, 10
+  orig: 41, 39
+  offset: 0, 0
+  index: -1
+Tank
+  rotate: false
+  xy: 309, 78
+  size: 324, 217
+  split: 0, 0, 0, 0
+  pad: 81, 81, 54, 54
+  orig: 324, 217
+  offset: 0, 0
+  index: -1

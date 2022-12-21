@@ -1,0 +1,32 @@
+LoadScreenSprite.png
+size: 960, 616
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Background
+  rotate: false
+  xy: 0, 0
+  size: 960, 540
+  split: 0, 0, 0, 0
+  pad: 240, 240, 135, 135
+  orig: 960, 540
+  offset: 0, 0
+  index: -1
+Loader
+  rotate: false
+  xy: 0, 540
+  size: 75, 76
+  split: 0, 0, 0, 0
+  pad: 19, 19, 19, 19
+  orig: 75, 76
+  offset: 0, 0
+  index: -1
+Loading ....
+  rotate: false
+  xy: 75, 540
+  size: 84, 17
+  split: 0, 0, 0, 0
+  pad: 21, 21, 4, 4
+  orig: 84, 17
+  offset: 0, 0
+  index: -1
