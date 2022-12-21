@@ -106,6 +106,13 @@ public class BattleScreen extends TankStarsScreen {
     }
 
     public void createWorld() {
+        if (playerTank instanceof AtomicTank) {
+            playerTank.getTextureRegion().flip(true, false);
+        }
+        if (enemyTank instanceof SpectreTank || enemyTank instanceof BuratinoTank) {
+            enemyTank.getTextureRegion().flip(true, false);
+        }
+
         //ground
         BodyDef groundBodyDef = new BodyDef();
         groundBodyDef.type = BodyDef.BodyType.StaticBody;

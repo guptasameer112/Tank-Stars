@@ -201,6 +201,7 @@ public class TankChangeScreen extends TankStarsScreen {
                 j[0] = (j[0] - 1) % 3;
                 if (j[0] == -1) j[0] = 2;
                 TankChangeScreenPlayer2Tank = tankTextureRegions[j[0] % 3];
+//                TankChangeScreenPlayer2Tank.flip(true, false);
             }
         });
         rightArrowTwo.addListener(new ClickListener() {
@@ -227,13 +228,15 @@ public class TankChangeScreen extends TankStarsScreen {
         batch.draw(TankChangeScreenLogo, 352, 362);
         batch.draw(PlayerTankText, 150, 300);
         batch.draw(EnemyTankText, 150 + 467, 300);
-        if (i[0] == 0) batch.draw(TankChangeScreenPlayer1Tank, 36, 64);
-        else if (i[0] == 1) batch.draw(TankChangeScreenPlayer1Tank, 36, 64);
-        else if (i[0] == 2) batch.draw(TankChangeScreenPlayer1Tank, 80, 100);
+        if (i[0] == 0) batch.draw(TankChangeScreenPlayer1Tank, 56, 64);
+        else if (i[0] == 1) batch.draw(TankChangeScreenPlayer1Tank, 51, 64);
+        else if (i[0] == 2) batch.draw(TankChangeScreenPlayer1Tank, 90, 100);
 
-        if (j[0] == 0) batch.draw(TankChangeScreenPlayer2Tank, 498, 66);
-        else if (j[0] == 1) batch.draw(TankChangeScreenPlayer2Tank, 498, 66);
+        TankChangeScreenPlayer2Tank.flip(true, false);
+        if (j[0] == 0) batch.draw(TankChangeScreenPlayer2Tank, 570, 66);
+        else if (j[0] == 1) batch.draw(TankChangeScreenPlayer2Tank, 580, 66);
         else if (j[0] == 2) batch.draw(TankChangeScreenPlayer2Tank, 555, 100);
+        TankChangeScreenPlayer2Tank.flip(true, false);
 //        batch.draw(TankChangeScreenPlayer2Tank, 498, 66);
 
         batch.end();
