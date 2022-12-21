@@ -14,10 +14,12 @@ public abstract class Tank implements Serializable {
     private final int healthCapacity;
     private int currentHealth;
     private final int moveSpeed;
-//    private final int damagePerShot;
+    //    private final int damagePerShot;
     private final Bullet bullet;
     private transient Body body;
     protected transient TextureRegion textureRegion;
+
+    private int fuelCapacity;
     protected transient Texture battleScreenSprite = new Texture("BattleScreen/BattleScreenSprite.png");
 
     public Tank(String tankName, int healthCapacity, int moveSpeed, float dps, int bulletSpeed) {
@@ -26,6 +28,7 @@ public abstract class Tank implements Serializable {
         this.currentHealth = healthCapacity;
         this.moveSpeed = moveSpeed;
         this.bullet = new Bullet(dps, bulletSpeed, this);
+        this.fuelCapacity = 5;
 //        this.damagePerShot = dps;
     }
 
@@ -64,6 +67,14 @@ public abstract class Tank implements Serializable {
     }
 
     public abstract void setTextureRegion();
+
+    public int getFuelCapacity() {
+        return fuelCapacity;
+    }
+
+    public void setFuelCapacity(int fuelCapacity) {
+        this.fuelCapacity = fuelCapacity;
+    }
 
     public void reduceHealth(int damage) {
         if (damage > 0) {

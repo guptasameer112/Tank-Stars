@@ -76,7 +76,7 @@ public class Config implements Serializable {
         return enemyTank;
     }
 
-//    public void setPlayerOnePosition(int x, int y) {
+    //    public void setPlayerOnePosition(int x, int y) {
 //        playerTankPosition = new Vector2(x, y);
 //    }
 //    public void setPlayerTwoPosition(int x, int y) {

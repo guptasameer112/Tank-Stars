@@ -251,7 +251,11 @@ public class BattleScreen extends TankStarsScreen {
     ProgressBar progressBar2;
 
     private Texture playerHealthBar = new Texture("BattleScreen/player 1 health.png");
+    private Texture playerTankFuel = new Texture("BattleScreen/player 1 health.png");
+
+
     private Texture enemyHealthBar = new Texture("BattleScreen/player 2 health.png");
+    private Texture enemyTankFuel = new Texture("BattleScreen/player 2 health.png");
 
     // World2D
     private World world;
@@ -263,9 +267,9 @@ public class BattleScreen extends TankStarsScreen {
     private Body enemyTankBody;
     private Body bulletBody;
     private ChainShape groundShape;
-//    private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
+    //    private ArrayList<Bullet> bullets = new ArrayList<Bullet>();
     private Collection<Bullet> bullets = new ArrayList<Bullet>();
-//    private ArrayList<Bullet> enemyBullets = new ArrayList<Bullet>();
+    //    private ArrayList<Bullet> enemyBullets = new ArrayList<Bullet>();
     private Collection<Bullet> enemyBullets = new ArrayList<Bullet>();
     private ArrayList<Vector2> groundCoords = new ArrayList<Vector2>();
 
@@ -329,9 +333,15 @@ public class BattleScreen extends TankStarsScreen {
             bulletBody.applyForceToCenter(speedX * 100f, speedY, true);
             // set bullet gravity to 0
             bulletBody.setGravityScale(0);
+            // set playerTank fuel to 5
+            playerTank.setFuelCapacity(5);
         } else {
+            // apply variable force according to the angle
             bulletBody.applyForceToCenter(speedX, speedY, true);
-            bulletBody.setGravityScale(10);
+            // apply gravity to the bullet randomly between 5 to 10
+            bulletBody.setGravityScale((float) (Math.random() * 5 + 5));
+            // set playerTank fuel to 5 for both tanks
+            playerTank.setFuelCapacity(5);
         }
 
         Bullet bullet = new Bullet(playerTank.getBulletType().getDamage(), playerTank.getBulletType().getSpeed(), playerTank);
@@ -352,9 +362,11 @@ public class BattleScreen extends TankStarsScreen {
 //            bulletBody.setLinearVelocity(-enemyTank.getBulletType().getSpeed(), 0);
             bulletBody.applyForceToCenter(-speedX * 100f, speedY, true);
             bulletBody.setGravityScale(0);
+            enemyTank.setFuelCapacity(5);
         } else {
             bulletBody.applyForceToCenter(-speedX, speedY, true);
-            bulletBody.setGravityScale(10);
+            bulletBody.setGravityScale((float) (Math.random() * 5 + 5));
+            enemyTank.setFuelCapacity(5);
         }
 
         Bullet bullet = new Bullet(enemyTank.getBulletType().getDamage(), enemyTank.getBulletType().getSpeed(), enemyTank);
@@ -440,11 +452,15 @@ public class BattleScreen extends TankStarsScreen {
         playerProcessor = new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
-                if (keycode == Input.Keys.A) {
+                if (keycode == Input.Keys.A && playerTank.getFuelCapacity() > 0) {
                     playerTank.getBody().applyLinearImpulse((float) -playerTank.getMoveSpeed(), 0, playerTank.getBody().getPosition().x, playerTank.getBody().getPosition().y, true);
+                    playerTank.setFuelCapacity(playerTank.getFuelCapacity() - 1);
+                    System.out.println("Player Fuel capacity: " + playerTank.getFuelCapacity());
                 }
-                if (keycode == Input.Keys.D) {
+                if (keycode == Input.Keys.D && playerTank.getFuelCapacity() > 0) {
                     playerTank.getBody().applyLinearImpulse((float) playerTank.getMoveSpeed(), 0, playerTank.getBody().getPosition().x, playerTank.getBody().getPosition().y, true);
+                    playerTank.setFuelCapacity(playerTank.getFuelCapacity() - 1);
+                    System.out.println("Player Fuel capacity: " + playerTank.getFuelCapacity());
                 }
                 if (keycode == Input.Keys.G) {
                     if (Objects.equals(playerTank.getTankName(), "Buratino")) {
@@ -483,12 +499,7 @@ public class BattleScreen extends TankStarsScreen {
             }
             @Override
             public boolean keyUp(int keycode) {
-                if (keycode == Input.Keys.A) {
-                    Vector2 vec = playerTank.getBody().getLinearVelocity();
-                    vec.x = 0;
-                    playerTank.getBody().setLinearVelocity(vec);
-                }
-                if (keycode == Input.Keys.D) {
+                if (keycode == Input.Keys.A || keycode == Input.Keys.D) {
                     Vector2 vec = playerTank.getBody().getLinearVelocity();
                     vec.x = 0;
                     playerTank.getBody().setLinearVelocity(vec);
@@ -500,11 +511,15 @@ public class BattleScreen extends TankStarsScreen {
         enemyProcessor = new InputAdapter() {
             @Override
             public boolean keyDown(int keycode) {
-                if (keycode == Input.Keys.LEFT) {
+                if (keycode == Input.Keys.LEFT && enemyTank.getFuelCapacity() > 0) {
                     enemyTank.getBody().applyLinearImpulse((float) -enemyTank.getMoveSpeed(), 0, enemyTank.getBody().getPosition().x, enemyTank.getBody().getPosition().y, true);
+                    enemyTank.setFuelCapacity(enemyTank.getFuelCapacity() - 1);
+                    System.out.println("Enemy fuel capacity: " + enemyTank.getFuelCapacity());
                 }
-                if (keycode == Input.Keys.RIGHT) {
+                if (keycode == Input.Keys.RIGHT && enemyTank.getFuelCapacity() > 0) {
                     enemyTank.getBody().applyLinearImpulse((float) enemyTank.getMoveSpeed(), 0, enemyTank.getBody().getPosition().x, enemyTank.getBody().getPosition().y, true);
+                    enemyTank.setFuelCapacity(enemyTank.getFuelCapacity() - 1);
+                    System.out.println("Enemy fuel capacity = " + enemyTank.getFuelCapacity());
                 }
                 if (keycode == Input.Keys.SPACE) {
                     if (Objects.equals(enemyTank.getTankName(), "Buratino")) {
@@ -527,12 +542,7 @@ public class BattleScreen extends TankStarsScreen {
             }
             @Override
             public boolean keyUp(int keycode) {
-                if (keycode == Input.Keys.LEFT) {
-                    Vector2 vec = enemyTank.getBody().getLinearVelocity();
-                    vec.x = 0;
-                    enemyTank.getBody().setLinearVelocity(vec);
-                }
-                if (keycode == Input.Keys.RIGHT) {
+                if (keycode == Input.Keys.LEFT || keycode == Input.Keys.RIGHT) {
                     Vector2 vec = enemyTank.getBody().getLinearVelocity();
                     vec.x = 0;
                     enemyTank.getBody().setLinearVelocity(vec);
@@ -641,8 +651,6 @@ public class BattleScreen extends TankStarsScreen {
 //
 //        stage.addActor(progressBar1);
 //        stage.addActor(progressBar2);
-
-
     }
 
 

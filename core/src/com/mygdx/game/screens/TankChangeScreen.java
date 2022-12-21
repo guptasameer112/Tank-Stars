@@ -58,7 +58,7 @@ public class TankChangeScreen extends TankStarsScreen {
         final TextureRegion[] tankTextureRegions = new TextureRegion[3];
         tankTextureRegions[0] = new TextureRegion(TankChangeScreenSprite, 423, 144, 430, 303); // SpectreTank
         tankTextureRegions[1] = new TextureRegion(TankChangeScreenSprite, 0, 144, 423, 303); // AtomicTank
-        tankTextureRegions[2] = new TextureRegion(new Texture("TankChange/BuratinoTank.png"), 0, 0, 444, 328);
+        tankTextureRegions[2] = new TextureRegion(new Texture("TankChange/BuratinoTank.png"), 0, 0, 311, 212);
         TankChangeScreenPlayer1Tank = tankTextureRegions[i[0]];
         TankChangeScreenPlayer2Tank = tankTextureRegions[j[0] % 3];
 //        TankChangeScreenPlayer1Tank = new TextureRegion(TankChangeScreenSprite, 423, 144, 430, 303);
